@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './drawer.dart';
-
+import 'components/routes.dart';
 class Home extends StatefulWidget {
   static const String routeName = "/home";
   @override
@@ -8,6 +8,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  TextEditingController month = TextEditingController();
+  var months = ["Juli", "Agustus", "September"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,8 +20,9 @@ class _HomeState extends State<Home> {
         body: GridView.count(
           crossAxisCount: 2,
           children: <Widget>[
-            GridViewCard(tahun: "2019",),
-            GridViewCard(),
+            GridViewCard(tahun: "Juli", ontap: () => Navigator.pushReplacementNamed(context, Routes.lastyear), controller: month ,),
+            GridViewCard(tahun: "Agustus", ontap: () => Navigator.pushReplacementNamed(context, Routes.lastyear), controller: month ,),
+            GridViewCard(tahun: "September", ontap: () => Navigator.pushReplacementNamed(context, Routes.lastyear), controller: month ,),
           ],
         ),
     );

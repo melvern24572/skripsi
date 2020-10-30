@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:skripsi/drawer.dart';
+import 'file:///C:/Users/wangs/AndroidStudioProjects/skripsi/lib/components/drawer.dart';
 import 'components/routes.dart';
-import 'drawer_profile.dart';
+import 'components/drawer_profile.dart';
 
 class Prediction extends StatefulWidget {
   static const String routeName = '/prediction';

@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'components/routes.dart';
+import 'routes.dart';
 import 'drawer_profile.dart';
 
 
@@ -30,6 +30,13 @@ class MainDrawer extends StatelessWidget {
                 style: TextStyle(fontSize: 18),
               ),
               onTap: () => Navigator.pushReplacementNamed(context, Routes.prediksi)),
+          ListTile(
+            leading: Icon(Icons.laptop),
+            title: Text(
+              'Barang',
+              style: TextStyle(fontSize: 18),
+            ),
+            onTap: () => Navigator.pushReplacementNamed(context, Routes.barang)),
           ListTile(
             leading: Icon(Icons.arrow_back),
             title: Text(

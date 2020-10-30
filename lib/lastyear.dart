@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class LastYear extends StatefulWidget {
-  static const String routeName = '/lastYear';
+class ListTransaksi extends StatefulWidget {
+  static const String routeName = '/listTransaksi';
   @override
   _State createState() => _State();
 }
 
-class _State extends State<LastYear> {
+class _State extends State<ListTransaksi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

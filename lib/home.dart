@@ -35,13 +35,13 @@ class _HomeState extends State<Home> {
     return "Sucess";
   }
 
-  Future getDate (var idBarang)async{
+  Future getDate ()async{
     var url = "http://192.168.42.191/prediksi/createTransaksi.php";
     setState(() {
       showSpinner = true;
     });
     var response = await http.post(url, body: {
-      "id_barang": idBarang,
+      "id_barang": _mySelection,
       "jumlah": qty.text,
       "tanggal" : _dateTime.day,
       "bulan" : _dateTime.month,
@@ -203,8 +203,7 @@ class _HomeState extends State<Home> {
                                         color: Colors.green,
                                         child: Text("Submit"),
                                         onPressed: () async {
-                                          //TODO : disini errornya
-                                          //getDate(list[index]['id_barang']);
+                                          getDate();
                                         },
                                       ),
                                     ],

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'components/drawer.dart';
 import 'components/routes.dart';
 import 'components/gridview_card.dart';
@@ -13,25 +14,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool showSpinner;
   TextEditingController qty = TextEditingController();
-  DateTime selectedDate;
+  DateTime _dateTime;
   TextEditingController month = TextEditingController();
   var months = ["Juli", "Agustus", "September"];
   String _mySelection;
   List data = List();
-
-  Future<void> _selectDate() async {
-    final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = picked;
-        print(_selectDate);
-      });
-  }
 
   Future<String> getData() async {
     var url = "http://192.168.42.191/prediksi/getAllBarang.php";
@@ -46,6 +35,46 @@ class _HomeState extends State<Home> {
     return "Sucess";
   }
 
+  Future getDate (var idBarang)async{
+    var url = "http://192.168.42.191/prediksi/createTransaksi.php";
+    setState(() {
+      showSpinner = true;
+    });
+    var response = await http.post(url, body: {
+      "id_barang": idBarang,
+      "jumlah": qty.text,
+      "tanggal" : _dateTime.day,
+      "bulan" : _dateTime.month,
+      "tahun" : _dateTime.year,
+    });
+    var data = json.decode(response.body);
+    if (data == "success") {
+      Fluttertoast.showToast(
+        msg: "Success",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
+      Navigator.of(context).pop();
+    } else {
+      Fluttertoast.showToast(
+        msg: "Input Failed",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+    setState(() {
+      showSpinner = false;
+    });
+  }
   @override
   void initState() {
     super.initState();
@@ -124,16 +153,24 @@ class _HomeState extends State<Home> {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Text(selectedDate == null ? 'Masukkan tanggal' : selectedDate.toString()),
+                                      Text(_dateTime == null ? 'Masukkan tanggal' : _dateTime.toString()),
                                       Spacer(
                                         flex: 5,
                                       ),
                                       GestureDetector(
                                         child: Icon(Icons.calendar_today),
                                           onTap: (){
-                                            _selectDate();
+                                            showDatePicker(
+                                                context: context,
+                                                initialDate: DateTime.now(),
+                                                firstDate: DateTime(2020),
+                                                lastDate: DateTime(2021)
+                                            ).then((date) {
+                                              setState((){
+                                                _dateTime = date;
+                                              });
+                                            });
                                           },
-
                                       ),
                                     ],
                                   ),
@@ -148,6 +185,31 @@ class _HomeState extends State<Home> {
                                     keyboardType: TextInputType.number,
                                   ),
                                 ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      RaisedButton(
+                                        child: Text("Cancel"),
+                                        color: Colors.red,
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      Spacer(
+                                        flex: 5,
+                                      ),
+                                      RaisedButton(
+                                        color: Colors.green,
+                                        child: Text("Submit"),
+                                        onPressed: () async {
+                                          //TODO : disini errornya
+                                          //getDate(list[index]['id_barang']);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
                           ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -9,7 +10,8 @@ class PageBarang extends StatefulWidget {
 }
 
 class _PageBarangState extends State<PageBarang> {
-  String _katval;
+  bool showSpinner;
+  String katval;
   List _kategori = [
     'Laptop Asus X Series',
     'Notebook Ideapad S Series',
@@ -23,14 +25,90 @@ class _PageBarangState extends State<PageBarang> {
     'FlashDisk 32GB',
     'Webcam'
   ];
-  TextEditingController nama_barang = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  TextEditingController namaBarang = TextEditingController();
+  TextEditingController updateBarang = TextEditingController();
+  Future addData() async {
+    var url = "http://192.168.42.191/prediksi/createBarang.php";
+    setState(() {
+      showSpinner = true;
+    });
+    var response = await http.post(url, body: {
+      "nama_barang": namaBarang.text,
+      "kategori_barang": katval,
+    });
+    var data = json.decode(response.body);
+    if (data == "success") {
+      Fluttertoast.showToast(
+        msg: "Success",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
+      Navigator.of(context).pop();
+    } else {
+      Fluttertoast.showToast(
+        msg: "Input Failed",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+    setState(() {
+      showSpinner = false;
+    });
+  }
+
   Future getData() async {
-    var url = 'http://192.168.42.92/prediksi/getAllBarang.php';
+    var url = 'http://192.168.42.191/prediksi/getAllBarang.php';
     var response = await http.get(url);
     return json.decode(response.body);
   }
 
+  Future editData() async{
+    var url = "http://192.168.42.191/prediksi/updateBarang.php";
+    setState(() {
+      showSpinner = true;
+    });
+    var response = await http.post(url, body: {
+      //"id_barang": id_barang,
+      "nama_barang": updateBarang.text,
+      "kategori_barang": katval,
+    });
+    var data = json.decode(response.body);
+    if (data == "success") {
+      Fluttertoast.showToast(
+        msg: "Success",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
+      Navigator.of(context).pop();
+    } else {
+      Fluttertoast.showToast(
+        msg: "Update Failed",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+    setState(() {
+      showSpinner = false;
+    });
+  }
   @override
   void initState() {
     super.initState();
@@ -52,15 +130,95 @@ class _PageBarangState extends State<PageBarang> {
                   itemBuilder: (context, index) {
                     List list = snapshot.data;
                     return ListTile(
-                      leading: GestureDetector(
-                        child: Icon(Icons.edit),
-                        onTap: () {},
-                      ),
+                      leading: Text(list[index]['id_barang']),
                       title: Text(list[index]['nama_barang']),
                       subtitle: Text(list[index]['kategori_barang']),
-                      trailing: GestureDetector(
-                        child: Icon(Icons.delete),
-                        onTap: () {},
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          GestureDetector(
+                            child: Icon(Icons.edit),
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return StatefulBuilder(builder:
+                                        (BuildContext context,
+                                        StateSetter setState) {
+                                      return AlertDialog(
+                                        content: Stack(
+                                          overflow: Overflow.visible,
+                                          children: <Widget>[
+                                            Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: TextField(
+                                                    decoration: (InputDecoration(
+                                                        hintText: 'Nama Barang')),
+                                                    controller: namaBarang,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.all(6.0),
+                                                  child: DropdownButton(
+                                                    hint: Text('Pilih Kategori'),
+                                                    value: katval,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        katval = value;
+                                                        print(value);
+                                                      });
+                                                    },
+                                                    items: _kategori.map((value) {
+                                                      return DropdownMenuItem(
+                                                        value: value,
+                                                        child: Text(value),
+                                                      );
+                                                    }).toList(),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                  const EdgeInsets.all(8.0),
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      RaisedButton(
+                                                        child: Text("Cancel"),
+                                                        color: Colors.red,
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                      Spacer(
+                                                        flex: 5,
+                                                      ),
+                                                      RaisedButton(
+                                                        color: Colors.green,
+                                                        child: Text("Submit"),
+                                                        onPressed: () async {
+                                                          editData();
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    });
+                                  });
+                            },
+                          ),
+                          GestureDetector(
+                            child: Icon(Icons.delete),
+                            onTap: () {},
+                          ),
+                        ],
                       ),
                     );
                   })
@@ -72,50 +230,40 @@ class _PageBarangState extends State<PageBarang> {
           showDialog(
               context: context,
               builder: (BuildContext context) {
-                return AlertDialog(
-                  content: Stack(
-                    overflow: Overflow.visible,
-                    children: <Widget>[
-                      Positioned(
-                        right: -30.0,
-                        top: -30.0,
-                        child: InkResponse(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: CircleAvatar(
-                            child: Icon(Icons.close),
-                            backgroundColor: Colors.red,
-                          ),
-                        ),
-                      ),
-                      Form(
-                        key: _formKey,
-                        child: Column(
+                return StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
+                  return AlertDialog(
+                    content: Stack(
+                      overflow: Overflow.visible,
+                      children: <Widget>[
+                        Column(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Padding(
                               padding: EdgeInsets.all(8.0),
                               child: TextField(
-                                controller: nama_barang,
+                                decoration:
+                                    (InputDecoration(hintText: 'Nama Barang')),
+                                controller: namaBarang,
                               ),
                             ),
                             Padding(
                               padding: EdgeInsets.all(6.0),
                               child: DropdownButton(
-                                  hint: Text('Pilih Kategori'),
-                                  value: _katval,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _katval = value;
-                                    });
-                                  },
-                                  items: _kategori.map((value) {
-                                    return DropdownMenuItem(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
+                                hint: Text('Pilih Kategori'),
+                                value: katval,
+                                onChanged: (value) {
+                                  setState(() {
+                                    katval = value;
+                                    print(value);
+                                  });
+                                },
+                                items: _kategori.map((value) {
+                                  return DropdownMenuItem(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
                               ),
                             ),
                             Padding(
@@ -125,10 +273,9 @@ class _PageBarangState extends State<PageBarang> {
                                   RaisedButton(
                                     child: Text("Cancel"),
                                     color: Colors.red,
-                                    onPressed: null,
-                                    /*if (_formKey.currentState.validate()) {
-                                        _formKey.currentState.save();
-                                      }*/
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
                                   ),
                                   Spacer(
                                     flex: 5,
@@ -136,20 +283,19 @@ class _PageBarangState extends State<PageBarang> {
                                   RaisedButton(
                                     color: Colors.green,
                                     child: Text("Submit"),
-                                    onPressed: null,
-                                    /*if (_formKey.currentState.validate()) {
-                                        _formKey.currentState.save();
-                                      }*/
+                                    onPressed: () async {
+                                      addData();
+                                    },
                                   ),
                                 ],
                               ),
                             )
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                );
+                      ],
+                    ),
+                  );
+                });
               });
         },
         child: Icon(

@@ -23,7 +23,7 @@ class _LoginPageState extends State<BodyPage> {
   String password;
 
   Future login() async {
-    var url = "http://192.168.42.92/prediksi/login_admin.php";
+    var url = "http://192.168.42.191/prediksi/login_admin.php";
     setState(() {
       showSpinner = true;
     });

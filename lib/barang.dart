@@ -71,13 +71,13 @@ class _PageBarangState extends State<PageBarang> {
     return json.decode(response.body);
   }
 
-  Future editData() async{
+  Future editData(var idBarang) async{
     var url = "http://192.168.42.191/prediksi/updateBarang.php";
     setState(() {
       showSpinner = true;
     });
     var response = await http.post(url, body: {
-      //"id_barang": id_barang,
+      "id_barang": idBarang,
       "nama_barang": updateBarang.text,
       "kategori_barang": katval,
     });
@@ -108,6 +108,44 @@ class _PageBarangState extends State<PageBarang> {
     setState(() {
       showSpinner = false;
     });
+  }
+
+  Future deleteData(var idBarang) async {
+    var url = "http://192.168.42.191/prediksi/deleteBarang.php";
+    setState(() {
+      showSpinner = true;
+    });
+    var response = await http.post(url, body: {
+      "id_barang": idBarang,
+    });
+    var data = json.decode(response.body);
+    if (data == "success") {
+      Fluttertoast.showToast(
+        msg: "Success",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
+      Navigator.of(context).pop();
+    } else {
+      Fluttertoast.showToast(
+        msg: "Delete Failed",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+    setState(() {
+      showSpinner = false;
+    });
+
   }
   @override
   void initState() {
@@ -157,7 +195,7 @@ class _PageBarangState extends State<PageBarang> {
                                                   child: TextField(
                                                     decoration: (InputDecoration(
                                                         hintText: 'Nama Barang')),
-                                                    controller: namaBarang,
+                                                    controller: updateBarang,
                                                   ),
                                                 ),
                                                 Padding(
@@ -199,12 +237,12 @@ class _PageBarangState extends State<PageBarang> {
                                                         color: Colors.green,
                                                         child: Text("Submit"),
                                                         onPressed: () async {
-                                                          editData();
+                                                          editData(list[index]['id_barang']);
                                                         },
                                                       ),
                                                     ],
                                                   ),
-                                                )
+                                                ),
                                               ],
                                             ),
                                           ],
@@ -216,7 +254,61 @@ class _PageBarangState extends State<PageBarang> {
                           ),
                           GestureDetector(
                             child: Icon(Icons.delete),
-                            onTap: () {},
+                            onTap: () async {
+                              showDialog(
+                                  context: context,
+                              builder: (BuildContext context){
+                                    return AlertDialog(
+                                      content: Stack(
+                                        overflow: Overflow.visible,
+                                        children: [
+                                          Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  'Are you sure want to delete it ?',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    RaisedButton(
+                                                      child: Text("NO"),
+                                                      color: Colors.red,
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                    Spacer(
+                                                      flex: 5,
+                                                    ),
+                                                    RaisedButton(
+                                                      color: Colors.green,
+                                                      child: Text("YES"),
+                                                      onPressed: () async {
+                                                        deleteData(list[index]['id_barang']);
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                              },
+                              );
+                            },
                           ),
                         ],
                       ),

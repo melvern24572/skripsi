@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
 class GridViewCard extends StatelessWidget {
-  final ontap;
-  final String tahun;
-  final TextEditingController controller;
-
+  final Function ontap;
+  final String bulan;
+  final String total;
   const GridViewCard({
     Key key,
     @required this.ontap,
-    @required this.tahun,
-    @required this.controller,
+    @required this.bulan, this.total,
+
   }) : super(key: key);
 
   @override
@@ -22,17 +21,14 @@ class GridViewCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              tahun,
+              bulan,
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 25.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            TextField(
-              controller: controller,
-              style: TextStyle(fontSize: 25.0, color: Colors.black),
-            ),
+            Text(total, style: TextStyle(color: Colors.black, fontSize: 25.0, fontWeight: FontWeight.bold),),
           ],
         ),
       ),

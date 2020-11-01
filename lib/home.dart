@@ -19,8 +19,21 @@ class _HomeState extends State<Home> {
   DateTime _dateTime;
   TextEditingController month = TextEditingController();
   var months = ["Juli", "Agustus", "September"];
+  String total;
   String _mySelection;
   List data = List();
+
+  Future<String> getTotal() async {
+    var url = "http://192.168.42.191/prediksi/getTransaksiSummary.php";
+    var res = await http
+        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+    var resBody = json.decode(res.body);
+    setState(() {
+      total = resBody;
+    });
+    print(total);
+    return "Sucess";
+  }
 
   Future<String> getData() async {
     var url = "http://192.168.42.191/prediksi/getAllBarang.php";
@@ -35,17 +48,22 @@ class _HomeState extends State<Home> {
     return "Sucess";
   }
 
-  Future getDate ()async{
+  Future addTransaction ()async{
     var url = "http://192.168.42.191/prediksi/createTransaksi.php";
     setState(() {
       showSpinner = true;
     });
+    print(_mySelection);
+    print(qty.text);
+    print(_dateTime.day);
+    print(_dateTime.month);
+    print(_dateTime.year);
     var response = await http.post(url, body: {
       "id_barang": _mySelection,
       "jumlah": qty.text,
-      "tanggal" : _dateTime.day,
-      "bulan" : _dateTime.month,
-      "tahun" : _dateTime.year,
+      "tanggal" : _dateTime.day.toString(),
+      "bulan" : _dateTime.month.toString(),
+      "tahun" : _dateTime.year.toString(),
     });
     var data = json.decode(response.body);
     if (data == "success") {
@@ -75,10 +93,12 @@ class _HomeState extends State<Home> {
       showSpinner = false;
     });
   }
+
   @override
   void initState() {
     super.initState();
     this.getData();
+    this.getTotal();
   }
 
   @override
@@ -92,22 +112,22 @@ class _HomeState extends State<Home> {
         crossAxisCount: 2,
         children: <Widget>[
           GridViewCard(
-            tahun: "Juli",
+            total: getTotal().toString(),
+           bulan: "Juli",
             ontap: () =>
                 Navigator.pushReplacementNamed(context, Routes.listTransaksi),
-            controller: month,
           ),
           GridViewCard(
-            tahun: "Agustus",
+            bulan: "Agustus",
+            total: getTotal().toString(),
             ontap: () =>
                 Navigator.pushReplacementNamed(context, Routes.listTransaksi),
-            controller: month,
           ),
           GridViewCard(
-            tahun: "September",
+            total: getTotal().toString(),
+            bulan: "September",
             ontap: () =>
                 Navigator.pushReplacementNamed(context, Routes.listTransaksi),
-            controller: month,
           ),
         ],
       ),
@@ -143,7 +163,7 @@ class _HomeState extends State<Home> {
                                     items: data.map((item) {
                                       return DropdownMenuItem(
                                         child: new Text(item['nama_barang']),
-                                        value: item['id_barang'].toString(),
+                                        value: item['id_barang'],
                                       );
                                     }).toList(),
                                   ),
@@ -203,7 +223,7 @@ class _HomeState extends State<Home> {
                                         color: Colors.green,
                                         child: Text("Submit"),
                                         onPressed: () async {
-                                          getDate();
+                                          addTransaction();
                                         },
                                       ),
                                     ],

@@ -4,10 +4,11 @@ class GridViewCard extends StatelessWidget {
   final Function ontap;
   final String bulan;
   final String total;
+  final String tahun;
   const GridViewCard({
     Key key,
     @required this.ontap,
-    @required this.bulan, this.total,
+    @required this.bulan, this.total, this.tahun,
 
   }) : super(key: key);
 

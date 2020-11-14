@@ -24,6 +24,7 @@ class _HomeState extends State<Home> {
   TextEditingController qty = TextEditingController();
   DateTime _dateTime;
   TextEditingController month = TextEditingController();
+  List tahun = List();
   var months = ["","Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
   List total = List();
   String _mySelection;
@@ -62,11 +63,6 @@ class _HomeState extends State<Home> {
     setState(() {
       showSpinner = true;
     });
-    print(_mySelection);
-    print(qty.text);
-    print(_dateTime.day);
-    print(_dateTime.month);
-    print(_dateTime.year);
     var response = await http.post(url, body: {
       "id_barang": _mySelection,
       "jumlah": qty.text,

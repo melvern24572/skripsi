@@ -13,7 +13,6 @@ class Prediction extends StatefulWidget {
 
 class _PredictionState extends State<Prediction> {
   var months = [
-    "",
     "Januari",
     "Februari",
     "Maret",
@@ -42,6 +41,10 @@ class _PredictionState extends State<Prediction> {
 
     print('data : $data');
     return 'Sucess';
+  }
+
+  Future<String> getPrediksi() async{
+
   }
 
   @override
@@ -93,7 +96,7 @@ class _PredictionState extends State<Prediction> {
               StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
                 return DropdownButton(
-                  hint: Text('Dari BUlan'),
+                  hint: Text('Bulan'),
                   value: bulan,
                   items: months.map((String item) {
                     return DropdownMenuItem<String>(
@@ -104,15 +107,20 @@ class _PredictionState extends State<Prediction> {
                   onChanged: (String value) {
                     setState(() {
                       bulan = value;
+                      print(bulan);
+                      var index = months.indexOf(value)+1;
+                      print(index);
                     });
                   },
+
                 );
               }),
+
               Text('Sampai bulan '),
               StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
                     return DropdownButton(
-                      hint: Text('Dari BUlan'),
+                      hint: Text('Dari Bulan'),
                       value: _mySelection,
                       items: months.map((String item) {
                         return DropdownMenuItem<String>(
@@ -123,6 +131,8 @@ class _PredictionState extends State<Prediction> {
                       onChanged: (String value) {
                         setState(() {
                           _mySelection = value;
+                          var index = months.indexOf(value)+1;
+                          print(index);
                         });
                       },
                     );
@@ -130,7 +140,7 @@ class _PredictionState extends State<Prediction> {
             ],
           ),
           RaisedButton(
-            onPressed: null,
+            onPressed: (){},
             child: Text("Submit"),
           ),
         ],

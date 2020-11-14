@@ -9,7 +9,7 @@ import 'package:skripsi/components/rounded_password.dart';
 import '../components/rounded_button.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'dart:convert';
-
+import 'package:skripsi/components/constrant.dart' as constrant;
 class BodyPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -23,7 +23,7 @@ class _LoginPageState extends State<BodyPage> {
   String password;
 
   Future login() async {
-    var url = "http://192.168.42.191/prediksi/login_admin.php";
+    var url = "${constrant.url}/login_admin.php";
     setState(() {
       showSpinner = true;
     });

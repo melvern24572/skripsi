@@ -2,11 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'components/drawer.dart';
+import 'package:skripsi/components/constrant.dart' as constrant;
 import 'components/routes.dart';
 import 'components/gridview_card.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'list_transaksi.dart';
+
+class TransaksiSummary{
+
+}
 class Home extends StatefulWidget {
   static const String routeName = "/home";
   @override
@@ -18,25 +24,28 @@ class _HomeState extends State<Home> {
   TextEditingController qty = TextEditingController();
   DateTime _dateTime;
   TextEditingController month = TextEditingController();
-  var months = ["Juli", "Agustus", "September"];
-  String total;
+  var months = ["","Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+  List total = List();
   String _mySelection;
+  List list = List();
   List data = List();
 
-  Future<String> getTotal() async {
-    var url = "http://192.168.42.191/prediksi/getTransaksiSummary.php";
+
+  Future getTotal() async {
+    var url = "${constrant.url}/getTransaksiSummary.php";
     var res = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
     setState(() {
       total = resBody;
     });
-    print(total);
+
+    print('total: $total' );
     return "Sucess";
   }
 
   Future<String> getData() async {
-    var url = "http://192.168.42.191/prediksi/getAllBarang.php";
+    var url = "${constrant.url}/getAllBarang.php";
     var res = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
@@ -49,7 +58,7 @@ class _HomeState extends State<Home> {
   }
 
   Future addTransaction ()async{
-    var url = "http://192.168.42.191/prediksi/createTransaksi.php";
+    var url = "${constrant.url}/createTransaksi.php";
     setState(() {
       showSpinner = true;
     });
@@ -105,31 +114,29 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('HOME'),
+        title: Text('Penjualan'),
       ),
       drawer: MainDrawer(),
-      body: GridView.count(
-        crossAxisCount: 2,
-        children: <Widget>[
-          GridViewCard(
-            total: getTotal().toString(),
-           bulan: "Juli",
-            ontap: () =>
-                Navigator.pushReplacementNamed(context, Routes.listTransaksi),
-          ),
-          GridViewCard(
-            bulan: "Agustus",
-            total: getTotal().toString(),
-            ontap: () =>
-                Navigator.pushReplacementNamed(context, Routes.listTransaksi),
-          ),
-          GridViewCard(
-            total: getTotal().toString(),
-            bulan: "September",
-            ontap: () =>
-                Navigator.pushReplacementNamed(context, Routes.listTransaksi),
-          ),
-        ],
+      body: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2
+        ),
+        itemBuilder: (context, i){
+          return GridViewCard(
+            bulan: months[int.parse(total[i]['bulan'])],
+            total: total[i]['total'].toString(),
+            ontap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ListTransaksi(
+                  bulan: total[i]['bulan'],
+                  tahun: total[i]['tahun'],
+                )),
+              );
+            },
+          );
+        },
+        itemCount: total.length,
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(

@@ -4,7 +4,7 @@ import 'package:skripsi/login_screen.dart';
 import '../home.dart';
 import '../prediksi.dart';
 import 'package:flutter/material.dart';
-import 'package:skripsi/lastyear.dart';
+import 'package:skripsi/list_transaksi.dart';
 
 class Routes{
   static const String home = Home.routeName;

@@ -21,7 +21,7 @@ class MainDrawer extends StatelessWidget {
               'Home',
               style: TextStyle(fontSize: 18),
             ),
-            onTap: () => Navigator.pushReplacementNamed(context, Routes.home),
+            onTap: () => Navigator.pushNamed(context, Routes.home),
           ),
           ListTile(
               leading: Icon(Icons.show_chart),
@@ -29,14 +29,15 @@ class MainDrawer extends StatelessWidget {
                 'Prediction',
                 style: TextStyle(fontSize: 18),
               ),
-              onTap: () => Navigator.pushReplacementNamed(context, Routes.prediksi)),
+              onTap: () => Navigator.pushNamed(context, Routes.prediksi)
+          ),
           ListTile(
             leading: Icon(Icons.laptop),
             title: Text(
               'Barang',
               style: TextStyle(fontSize: 18),
             ),
-            onTap: () => Navigator.pushReplacementNamed(context, Routes.barang)),
+            onTap: () => Navigator.pushNamed(context, Routes.barang)),
           ListTile(
             leading: Icon(Icons.arrow_back),
             title: Text(

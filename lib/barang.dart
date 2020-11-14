@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:skripsi/components/drawer.dart';
 import 'dart:convert';
-
+import 'components/constrant.dart' as constrant;
 class PageBarang extends StatefulWidget {
   static const String routeName = '/barang';
   @override
@@ -28,7 +29,7 @@ class _PageBarangState extends State<PageBarang> {
   TextEditingController namaBarang = TextEditingController();
   TextEditingController updateBarang = TextEditingController();
   Future addData() async {
-    var url = "http://192.168.42.191/prediksi/createBarang.php";
+    var url = "${constrant.url}/createBarang.php";
     setState(() {
       showSpinner = true;
     });
@@ -66,13 +67,13 @@ class _PageBarangState extends State<PageBarang> {
   }
 
   Future getData() async {
-    var url = 'http://192.168.42.191/prediksi/getAllBarang.php';
+    var url = '${constrant.url}/getAllBarang.php';
     var response = await http.get(url);
     return json.decode(response.body);
   }
 
   Future editData(var idBarang) async{
-    var url = "http://192.168.42.191/prediksi/updateBarang.php";
+    var url = "${constrant.url}/updateBarang.php";
     setState(() {
       showSpinner = true;
     });
@@ -111,7 +112,7 @@ class _PageBarangState extends State<PageBarang> {
   }
 
   Future deleteData(var idBarang) async {
-    var url = "http://192.168.42.191/prediksi/deleteBarang.php";
+    var url = "${constrant.url}/deleteBarang.php";
     setState(() {
       showSpinner = true;
     });
@@ -156,8 +157,9 @@ class _PageBarangState extends State<PageBarang> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ini barang'),
+        title: Text('Data Barang'),
       ),
+      drawer: MainDrawer(),
       body: FutureBuilder(
         future: getData(),
         builder: (context, snapshot) {

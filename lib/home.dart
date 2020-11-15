@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'components/drawer.dart';
 import 'package:skripsi/components/constrant.dart' as constrant;
-import 'components/routes.dart';
 import 'components/gridview_card.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

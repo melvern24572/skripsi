@@ -26,8 +26,12 @@ class _PredictionState extends State<Prediction> {
     "November",
     "Desember"
   ];
-  String bulan;
+  var indexAwal;
+  var indexAkhir;
+  String bulanawal;
+  String bulanakhir;
   List data = List();
+  List prediksi = List();
   String _mySelection;
   Future<String> getData() async {
     var url = '${constrant.url}/getAllBarang.php';
@@ -43,8 +47,22 @@ class _PredictionState extends State<Prediction> {
     return 'Sucess';
   }
 
-  Future<String> getPrediksi() async{
+  Future getPrediksi() async {
+    var url = "${constrant.url}/getPrediksi.php";
+    var response = await http.post(url,
+        body: {
+          "bulan_awal": indexAwal.toString(),
+          "bulan_akhir": indexAkhir.toString(),
+          "kategori_barang" : _mySelection,},
+        headers: {"Accept": "application/json"});
+    var resBody = json.decode(response.body);
+    print('transaksi : $resBody');
+    setState(() {
+     prediksi = resBody;
+    });
 
+    //print('total: $transaksi');
+    return "Sucess";
   }
 
   @override
@@ -97,7 +115,7 @@ class _PredictionState extends State<Prediction> {
                   builder: (BuildContext context, StateSetter setState) {
                 return DropdownButton(
                   hint: Text('Bulan'),
-                  value: bulan,
+                  value: bulanawal,
                   items: months.map((String item) {
                     return DropdownMenuItem<String>(
                       value: item,
@@ -106,43 +124,57 @@ class _PredictionState extends State<Prediction> {
                   }).toList(),
                   onChanged: (String value) {
                     setState(() {
-                      bulan = value;
-                      print(bulan);
-                      var index = months.indexOf(value)+1;
-                      print(index);
+                      bulanawal = value;
+                      print(bulanawal);
+                      indexAwal = months.indexOf(value) + 1;
+                      print(indexAwal);
                     });
                   },
-
                 );
               }),
-
               Text('Sampai bulan '),
               StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
-                    return DropdownButton(
-                      hint: Text('Dari Bulan'),
-                      value: _mySelection,
-                      items: months.map((String item) {
-                        return DropdownMenuItem<String>(
-                          value: item,
-                          child: Text(item),
-                        );
-                      }).toList(),
-                      onChanged: (String value) {
-                        setState(() {
-                          _mySelection = value;
-                          var index = months.indexOf(value)+1;
-                          print(index);
-                        });
-                      },
+                return DropdownButton(
+                  hint: Text('Dari Bulan'),
+                  value: bulanakhir,
+                  items: months.map((String item) {
+                    return DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(item),
                     );
-                  }),
+                  }).toList(),
+                  onChanged: (String value) {
+                    setState(() {
+                      bulanakhir = value;
+                      indexAkhir = months.indexOf(value) + 1;
+                      print(indexAkhir);
+                    });
+                  },
+                );
+              }),
             ],
           ),
           RaisedButton(
-            onPressed: (){},
+            onPressed: () async {
+              setState(() {
+                getPrediksi();
+              });
+            },
             child: Text("Submit"),
           ),
+          Spacer(
+            flex: 5,
+          ),
+          Expanded(
+            child: ListView.builder(itemCount: prediksi.length, itemBuilder: (context, index) {
+              return ListTile(
+                leading: Text(prediksi[index]['a']),
+                subtitle: Text(prediksi[index]['b']),
+                trailing: Text(prediksi[index]['prediksi']),
+              );
+            }),
+          )
         ],
       ),
     );

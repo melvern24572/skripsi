@@ -55,8 +55,12 @@ class _PredictionState extends State<Prediction> {
           "bulan_akhir": indexAkhir.toString(),
           "kategori_barang" : _mySelection,},
         headers: {"Accept": "application/json"});
+    print(indexAwal);
+    print(indexAkhir);
+    print(_mySelection);
+    print ("test: ${response.body}");
     var resBody = json.decode(response.body);
-    print('transaksi : $resBody');
+
     setState(() {
      prediksi = resBody;
     });
@@ -99,7 +103,7 @@ class _PredictionState extends State<Prediction> {
                     items: data.map((item) {
                       return DropdownMenuItem(
                         child: new Text(item['kategori_barang']),
-                        value: item['id_barang'],
+                        value: item['kategori_barang'],
                       );
                     }).toList(),
                   ),

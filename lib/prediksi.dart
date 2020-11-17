@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/wangs/AndroidStudioProjects/skripsi/lib/components/drawer.dart';
+import './components/drawer.dart';
 import 'components/constrant.dart' as constrant;
 import 'package:http/http.dart' as http;
 import 'dart:convert';

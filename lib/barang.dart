@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:skripsi/components/drawer.dart';
+import 'package:skripsi/utils/function.dart';
 import 'dart:convert';
 import 'components/constrant.dart' as constrant;
 class PageBarang extends StatefulWidget {
@@ -38,29 +39,10 @@ class _PageBarangState extends State<PageBarang> {
       "kategori_barang": katval,
     });
     var data = json.decode(response.body);
-    if (data == "success") {
-      Fluttertoast.showToast(
-        msg: "Success",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
 
-      Navigator.of(context).pop();
-    } else {
-      Fluttertoast.showToast(
-        msg: "Input Failed",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
+    Functions.toast(msg: data == "success" ? "success" : "Input Failed");
+    if (data == "success") Navigator.of(context).pop();
+
     setState(() {
       showSpinner = false;
     });
@@ -83,29 +65,10 @@ class _PageBarangState extends State<PageBarang> {
       "kategori_barang": katval,
     });
     var data = json.decode(response.body);
-    if (data == "success") {
-      Fluttertoast.showToast(
-        msg: "Success",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
 
-      Navigator.of(context).pop();
-    } else {
-      Fluttertoast.showToast(
-        msg: "Update Failed",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
+    Functions.toast(msg: data == "success" ? "success" : "Update Failed");
+    if (data == "success") Navigator.of(context).pop();
+
     setState(() {
       showSpinner = false;
     });
@@ -120,29 +83,10 @@ class _PageBarangState extends State<PageBarang> {
       "id_barang": idBarang,
     });
     var data = json.decode(response.body);
-    if (data == "success") {
-      Fluttertoast.showToast(
-        msg: "Success",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
 
-      Navigator.of(context).pop();
-    } else {
-      Fluttertoast.showToast(
-        msg: "Delete Failed",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
+    Functions.toast(msg: data == "success" ? "success" : "Delete Failed");
+    if (data == "success") Navigator.of(context).pop();
+
     setState(() {
       showSpinner = false;
     });

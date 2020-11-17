@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skripsi/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'file:///C:/Users/wangs/AndroidStudioProjects/skripsi/lib/components/routes.dart';
+import './components/routes.dart';
 
 
 void main() async {

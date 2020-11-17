@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:skripsi/utils/function.dart';
 import 'components/drawer.dart';
 import 'package:skripsi/components/constrant.dart' as constrant;
 import 'components/gridview_card.dart';
@@ -70,29 +71,10 @@ class _HomeState extends State<Home> {
       "tahun" : _dateTime.year.toString(),
     });
     var data = json.decode(response.body);
-    if (data == "success") {
-      Fluttertoast.showToast(
-        msg: "Success",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
 
-      Navigator.of(context).pop();
-    } else {
-      Fluttertoast.showToast(
-        msg: "Input Failed",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
+    Functions.toast(msg: data == "success" ? "success" : "Input Failed");
+    if (data == "success") Navigator.of(context).pop();
+
     setState(() {
       showSpinner = false;
     });

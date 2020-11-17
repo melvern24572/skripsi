@@ -3,7 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:skripsi/home.dart';
-import 'file:///C:/Users/wangs/AndroidStudioProjects/skripsi/lib/login_screen/background.dart';
+import 'package:skripsi/utils/function.dart';
+import './background.dart';
 import 'package:skripsi/components/rounded_input_field.dart';
 import 'package:skripsi/components/rounded_password.dart';
 import '../components/rounded_button.dart';
@@ -30,31 +31,12 @@ class _LoginPageState extends State<BodyPage> {
     var response = await http.post(url, body: {
       "username": emailControl.text,
       "password": passControl.text,
-    });
+    }).timeout(const Duration(seconds: 5));
     var data = json.decode(response.body);
-    if (data == "Success") {
-      Fluttertoast.showToast(
-        msg: "Login Successful",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
 
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-    } else {
-      Fluttertoast.showToast(
-        msg: "Username & Password Incorrect!!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
+    Functions.toast(msg: data == "Success" ? "Login Successful" : "Username & Password Incorrect!!");
+    if (data == "Success") Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+
     setState(() {
       showSpinner = false;
     });

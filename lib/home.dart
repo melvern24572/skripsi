@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:skripsi/components/bar_chart.dart';
 import 'package:skripsi/utils/function.dart';
 import 'components/drawer.dart';
 import 'package:skripsi/components/constrant.dart' as constrant;
@@ -10,11 +11,11 @@ import 'dart:convert';
 
 import 'list_transaksi.dart';
 
-class TransaksiSummary{
+class TransaksiSummary {}
 
-}
 class Home extends StatefulWidget {
   static const String routeName = "/home";
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -25,12 +26,25 @@ class _HomeState extends State<Home> {
   DateTime _dateTime;
   TextEditingController month = TextEditingController();
   List tahun = List();
-  var months = ["","Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+  var months = [
+    "",
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember"
+  ];
   List total = List();
   String _mySelection;
   List list = List();
   List data = List();
-
 
   Future getTotal() async {
     var url = "${constrant.url}/getTransaksiSummary.php";
@@ -41,7 +55,7 @@ class _HomeState extends State<Home> {
       total = resBody;
     });
 
-    print('total: $total' );
+    print('total: $total');
     return "Sucess";
   }
 
@@ -58,7 +72,7 @@ class _HomeState extends State<Home> {
     return "Sucess";
   }
 
-  Future addTransaction ()async{
+  Future addTransaction() async {
     var url = "${constrant.url}/createTransaksi.php";
     setState(() {
       showSpinner = true;
@@ -66,9 +80,9 @@ class _HomeState extends State<Home> {
     var response = await http.post(url, body: {
       "id_barang": _mySelection,
       "jumlah": qty.text,
-      "tanggal" : _dateTime.day.toString(),
-      "bulan" : _dateTime.month.toString(),
-      "tahun" : _dateTime.year.toString(),
+      "tanggal": _dateTime.day.toString(),
+      "bulan": _dateTime.month.toString(),
+      "tahun": _dateTime.year.toString(),
     });
     var data = json.decode(response.body);
 
@@ -89,31 +103,135 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    setDummyData();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Penjualan'),
       ),
       drawer: MainDrawer(),
-      body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 16,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {},
+                  borderRadius: BorderRadius.circular(50),
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    child: Icon(
+                      Icons.keyboard_arrow_left_sharp,
+                      size: 30,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  "2020",
+                  style: TextStyle(
+                      fontSize: 24.0,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                InkWell(
+                  onTap: () {},
+                  borderRadius: BorderRadius.circular(50),
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    child: Icon(
+                      Icons.keyboard_arrow_right_sharp,
+                      size: 30,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            BarChartComponent(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "This Month Sales",
+                  style: TextStyle(
+                      fontSize: 24.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 4),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                  ),
+                  child: Text(
+                    "Nov 2020",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 8),
+              child: Text(
+                "Total: 56 transactions",
+              ),
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  child: Text("Top sales: Leptop Lenovo"),
+                ),
+                Icon(
+                  Icons.star,
+                  color: Colors.yellow,
+                  size: 20,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: total.length,
+              itemBuilder: (context, i) => GridViewCard(
+                ontap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ListTransaksi(
+                              bulan: total[i]['bulan'],
+                              tahun: total[i]['tahun'],
+                            )),
+                  );
+                },
+                bulan: months[int.parse(total[i]['bulan'])],
+                total: total[i]['total'],
+              ),
+            ),
+          ],
         ),
-        itemBuilder: (context, i){
-          return GridViewCard(
-            bulan: months[int.parse(total[i]['bulan'])],
-            total: total[i]['total'].toString(),
-            ontap: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ListTransaksi(
-                  bulan: total[i]['bulan'],
-                  tahun: total[i]['tahun'],
-                )),
-              );
-            },
-          );
-        },
-        itemCount: total.length,
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -157,24 +275,26 @@ class _HomeState extends State<Home> {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Text(_dateTime == null ? 'Masukkan tanggal' : _dateTime.toString()),
+                                      Text(_dateTime == null
+                                          ? 'Masukkan tanggal'
+                                          : _dateTime.toString()),
                                       Spacer(
                                         flex: 5,
                                       ),
                                       GestureDetector(
                                         child: Icon(Icons.calendar_today),
-                                          onTap: (){
-                                            showDatePicker(
-                                                context: context,
-                                                initialDate: DateTime.now(),
-                                                firstDate: DateTime(2020),
-                                                lastDate: DateTime(2021)
-                                            ).then((date) {
-                                              setState((){
-                                                _dateTime = date;
-                                              });
+                                        onTap: () {
+                                          showDatePicker(
+                                                  context: context,
+                                                  initialDate: DateTime.now(),
+                                                  firstDate: DateTime(2020),
+                                                  lastDate: DateTime(2021))
+                                              .then((date) {
+                                            setState(() {
+                                              _dateTime = date;
                                             });
-                                          },
+                                          });
+                                        },
                                       ),
                                     ],
                                   ),
@@ -183,8 +303,7 @@ class _HomeState extends State<Home> {
                                   padding: EdgeInsets.all(8.0),
                                   child: TextField(
                                     decoration: InputDecoration(
-                                      hintText: "Masukkan Jumlah Barang"
-                                    ),
+                                        hintText: "Masukkan Jumlah Barang"),
                                     controller: qty,
                                     keyboardType: TextInputType.number,
                                   ),
@@ -225,5 +344,16 @@ class _HomeState extends State<Home> {
         },
       ),
     );
+  }
+
+  void setDummyData() {
+    total = [
+      {"total": "10", "bulan": "1", "tahun": "2020"},
+      {"total": "20", "bulan": "2", "tahun": "2020"},
+      {"total": "30", "bulan": "3", "tahun": "2020"},
+      {"total": "30", "bulan": "3", "tahun": "2020"},
+      {"total": "30", "bulan": "3", "tahun": "2020"},
+      {"total": "30", "bulan": "3", "tahun": "2020"},
+    ];
   }
 }

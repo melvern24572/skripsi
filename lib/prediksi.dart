@@ -26,12 +26,16 @@ class _PredictionState extends State<Prediction> {
     "November",
     "Desember"
   ];
+
+  double a,b, nilai;
+  var hasil_a, hasil_b, hasil_nilai;
   var indexAwal;
   var indexAkhir;
   String bulanawal;
   String bulanakhir;
   List data = List();
   List prediksi = List();
+  List hitung = List();
   String _mySelection;
   Future<String> getData() async {
     var url = '${constrant.url}/getAllBarang.php';
@@ -49,23 +53,42 @@ class _PredictionState extends State<Prediction> {
 
   Future getPrediksi() async {
     var url = "${constrant.url}/getPrediksi.php";
-    var response = await http.post(url,
-        body: {
-          "bulan_awal": indexAwal.toString(),
-          "bulan_akhir": indexAkhir.toString(),
-          "kategori_barang" : _mySelection,},
-        headers: {"Accept": "application/json"});
-    print(indexAwal);
-    print(indexAkhir);
-    print(_mySelection);
-    print ("test: ${response.body}");
+    var response = await http.post(url, body: {
+      "bulan_awal": indexAwal.toString(),
+      "bulan_akhir": indexAkhir.toString(),
+      "kategori_barang": _mySelection,
+    }, headers: {
+      "Accept": "application/json"
+    });
     var resBody = json.decode(response.body);
 
     setState(() {
-     prediksi = resBody;
+      prediksi = resBody;
     });
 
     //print('total: $transaksi');
+    return "Sucess";
+  }
+
+  Future getHitung() async {
+    var url = "${constrant.url}/getHitung.php";
+    var response = await http.post(url, body: {
+      "bulan_awal": indexAwal.toString(),
+      "bulan_akhir": indexAkhir.toString(),
+      "kategori_barang": _mySelection,
+    }, headers: {
+      "Accept": "application/json"
+    });
+    print(indexAwal);
+    print(indexAkhir);
+    print(_mySelection);
+
+    var resBody = json.decode(response.body);
+
+    setState(() {
+      hitung = resBody;
+    });
+    print("test: $hitung");
     return "Sucess";
   }
 
@@ -162,23 +185,66 @@ class _PredictionState extends State<Prediction> {
           RaisedButton(
             onPressed: () async {
               setState(() {
+                getHitung();
                 getPrediksi();
               });
             },
             child: Text("Submit"),
           ),
-          Spacer(
-            flex: 5,
+
+          Padding(
+            padding: EdgeInsets.only(top: 5.0),
           ),
-          Expanded(
-            child: ListView.builder(itemCount: prediksi.length, itemBuilder: (context, index) {
-              return ListTile(
-                leading: Text(prediksi[index]['a']),
-                subtitle: Text(prediksi[index]['b']),
-                trailing: Text(prediksi[index]['prediksi']),
-              );
-            }),
-          )
+          Container(
+            height: 50.0,
+            child: ListView.builder(
+                itemCount: hitung.length,
+                itemBuilder: (context, index) {
+                  return ListView(
+                    shrinkWrap: true,
+                    children: [
+                      Row(
+                        children: [
+                          Text(hitung[index]['bulan']),
+                          Text(hitung[index]['kategori_barang']),
+                          Text(hitung[index]['y']),
+                          Text(hitung[index]['x']),
+                          Text(hitung[index]['xy']),
+                          Text(hitung[index]['x2']),
+                        ],
+                      ),
+                    ],
+                  );
+                }),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 8.0),
+          ),
+          Container(
+            height: 50.0,
+            child: ListView.builder(
+                itemCount: prediksi.length,
+                itemBuilder: (context, index) {
+                  a = double.parse(prediksi[index]['a']);
+                  b = double.parse(prediksi[index]['b']);
+                  nilai = double.parse(prediksi[index]['prediksi']);
+                  hasil_a = a.round();
+                  hasil_b = b.round();
+                  hasil_nilai = nilai.round();
+                  return ListView(
+                    shrinkWrap: true,
+                    children: [
+                      Row(
+                        children: [
+                          Text(hasil_a.toString()),
+                          Text(hasil_b.toString()),
+                          Text(hasil_nilai.toString()),
+                        ],
+                      ),
+                    ],
+                  );
+                }),
+          ),
         ],
       ),
     );

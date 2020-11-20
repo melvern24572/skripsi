@@ -58,8 +58,6 @@ class _State extends State<ListTransaksi> {
   }
   @override
   Widget build(BuildContext context) {
-//    print('bulan : ${widget.bulan}');
-//    print('tahun :${}widget.tahun');
     return Scaffold(
       appBar: AppBar(
         title: Text(months[int.parse(widget.bulan)]),

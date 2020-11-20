@@ -196,7 +196,7 @@ class _PredictionState extends State<Prediction> {
             padding: EdgeInsets.only(top: 5.0),
           ),
           Container(
-            height: 50.0,
+            height: 100.0,
             child: ListView.builder(
                 itemCount: hitung.length,
                 itemBuilder: (context, index) {

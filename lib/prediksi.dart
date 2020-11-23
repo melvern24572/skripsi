@@ -12,6 +12,26 @@ class Prediction extends StatefulWidget {
 }
 
 class _PredictionState extends State<Prediction> {
+  String katval;
+  List _kategori = [
+    'Laptop Asus X Series',
+    'Notebook Ideapad S Series',
+    'Laptop Dell Inspiron Series',
+    'Laptop Lenovo V Series',
+    'Intel Core i3',
+    'Intel Core i5',
+    'Intel Core i7',
+    'AMD Ryzen',
+    'FlashDisk 16GB',
+    'FlashDisk 32GB',
+    'Webcam',
+    'Ram DDR 3 4 GB',
+    'Ram DDR 3 8 GB',
+    'Ram DDR 3 16 GB',
+    'Ram DDR 4 4 GB',
+    'Ram DDR 4 8 GB',
+    'Ram DDR 4 16 GB',
+  ];
   var months = [
     "Januari",
     "Februari",
@@ -26,12 +46,15 @@ class _PredictionState extends State<Prediction> {
     "November",
     "Desember"
   ];
+  double a,b, nilai;
+  var hasil_a, hasil_b, hasil_nilai;
   var indexAwal;
   var indexAkhir;
   String bulanawal;
   String bulanakhir;
   List data = List();
   List prediksi = List();
+  List hitung = List();
   String _mySelection;
   Future<String> getData() async {
     var url = '${constrant.url}/getAllBarang.php';
@@ -69,6 +92,27 @@ class _PredictionState extends State<Prediction> {
     return "Sucess";
   }
 
+  Future getHitung() async {
+    var url = "${constrant.url}/getHitung.php";
+    var response = await http.post(url, body: {
+      "bulan_awal": indexAwal.toString(),
+      "bulan_akhir": indexAkhir.toString(),
+      "kategori_barang": katval,
+    }, headers: {
+      "Accept": "application/json"
+    });
+    print(indexAwal);
+    print(indexAkhir);
+
+    var resBody = json.decode(response.body);
+
+    setState(() {
+      hitung = resBody;
+    });
+    print("test: $hitung");
+    return "Sucess";
+  }
+
   @override
   void initState() {
     super.initState();
@@ -93,17 +137,18 @@ class _PredictionState extends State<Prediction> {
                 return Padding(
                   padding: EdgeInsets.all(8.0),
                   child: DropdownButton(
-                    hint: Text('Pilih Barang'),
-                    value: _mySelection,
+                    hint: Text('Pilih Kategori'),
+                    value: katval,
                     onChanged: (value) {
                       setState(() {
-                        _mySelection = value;
+                        katval = value;
+                        print(value);
                       });
                     },
-                    items: data.map((item) {
+                    items: _kategori.map((value) {
                       return DropdownMenuItem(
-                        child: new Text(item['kategori_barang']),
-                        value: item['kategori_barang'],
+                        value: value,
+                        child: Text(value),
                       );
                     }).toList(),
                   ),
@@ -167,18 +212,55 @@ class _PredictionState extends State<Prediction> {
             },
             child: Text("Submit"),
           ),
-          Spacer(
-            flex: 5,
+          Padding(
+            padding: EdgeInsets.only(top: 5.0),
           ),
-          Expanded(
-            child: ListView.builder(itemCount: prediksi.length, itemBuilder: (context, index) {
-              return ListTile(
-                leading: Text(prediksi[index]['a']),
-                subtitle: Text(prediksi[index]['b']),
-                trailing: Text(prediksi[index]['prediksi']),
-              );
-            }),
-          )
+          Container(
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: hitung.length,
+                itemBuilder: (context, index) {
+                  return
+                    Container(
+                      child: Row(
+                        children: [
+                          Text(hitung[index]['bulan']),
+                          Text(hitung[index]['kategori_barang']),
+                          Text(hitung[index]['y']),
+                          Text(hitung[index]['x']),
+                          Text(hitung[index]['xy']),
+                          Text(hitung[index]['x2']),
+                        ],
+                      ),
+                    );
+                }),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 8.0),
+          ),
+          Container(
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: prediksi.length,
+                itemBuilder: (context, index) {
+                  a = double.parse(prediksi[index]['a']);
+                  b = double.parse(prediksi[index]['b']);
+                  nilai = double.parse(prediksi[index]['prediksi']);
+                  hasil_a = a.round();
+                  hasil_b = b.round();
+                  hasil_nilai = nilai.round();
+                  return
+                    Row(
+                      children: [
+                        Text(hasil_a.toString()),
+                        Text(hasil_b.toString()),
+                        Text(hasil_nilai.toString()),
+                      ],
+                    );
+
+
+                }),
+          ),
         ],
       ),
     );

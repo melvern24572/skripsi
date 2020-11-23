@@ -65,7 +65,7 @@ class _State extends State<ListTransaksi> {
   Widget build(BuildContext context) {
 //    print('bulan : ${widget.bulan}');
 //    print('tahun :${}widget.tahun');
-    setDummyData();
+    //setDummyData();
 
     return Scaffold(
         appBar: AppBar(
@@ -115,210 +115,210 @@ class _State extends State<ListTransaksi> {
         ));
   }
 
-  void setDummyData() {
-    transaksi = [
-      {
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },
-      {
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },
-      {
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },
-      {
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },{
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      },
-      {
-        "id_transaksi": "1",
-        "nama_barang": "Lenovo FX505GE",
-        "kategori_barang": "Laptop Lenovo",
-        "jumlah": "8"
-      }
-    ];
-  }
+//  void setDummyData() {
+//    transaksi = [
+//      {
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },
+//      {
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },
+//      {
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },
+//      {
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },{
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      },
+//      {
+//        "id_transaksi": "1",
+//        "nama_barang": "Lenovo FX505GE",
+//        "kategori_barang": "Laptop Lenovo",
+//        "jumlah": "8"
+//      }
+//    ];
+//  }
 
   Widget header(String name){
     return Expanded(

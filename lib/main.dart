@@ -3,6 +3,7 @@ import 'package:skripsi/home.dart';
 import 'package:skripsi/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import './components/routes.dart';
+import 'login_screen.dart';
 
 
 void main() async {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: Routes.getRoutes(context),
-      initialRoute: Home.routeName,
+      initialRoute: LoginScreen.routeName,
       /*theme: ThemeData(
         primaryColor: Colors.black,
         scaffoldBackgroundColor: Colors.white,

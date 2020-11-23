@@ -55,7 +55,6 @@ class _PredictionState extends State<Prediction> {
   List data = List();
   List prediksi = List();
   List hitung = List();
-  String _mySelection;
   Future<String> getData() async {
     var url = '${constrant.url}/getAllBarang.php';
     var res = await http
@@ -75,7 +74,7 @@ class _PredictionState extends State<Prediction> {
     var response = await http.post(url, body: {
       "bulan_awal": indexAwal.toString(),
       "bulan_akhir": indexAkhir.toString(),
-      "kategori_barang": _mySelection,
+      "kategori_barang": katval,
     }, headers: {
       "Accept": "application/json"
     });
@@ -88,29 +87,6 @@ class _PredictionState extends State<Prediction> {
     //print('total: $transaksi');
     return "Sucess";
   }
-
-  Future getHitung() async {
-    var url = "${constrant.url}/getHitung.php";
-    var response = await http.post(url, body: {
-      "bulan_awal": indexAwal.toString(),
-      "bulan_akhir": indexAkhir.toString(),
-      "kategori_barang": _mySelection,
-    }, headers: {
-      "Accept": "application/json"
-    });
-    print(indexAwal);
-    print(indexAkhir);
-    print(_mySelection);
-
-    var resBody = json.decode(response.body);
-
-    setState(() {
-      hitung = resBody;
-    });
-    print("test: $hitung");
-    return "Sucess";
-  }
-
   Future getHitung() async {
     var url = "${constrant.url}/getHitung.php";
     var response = await http.post(url, body: {

@@ -158,7 +158,9 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-            BarChartComponent(),
+            BarChartComponent(
+              jumlah: 10,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -1,7 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-
+import 'constrant.dart' as constrant;
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 class BarChartComponent extends StatefulWidget {
+  final double jumlah;
+  const BarChartComponent({ this.jumlah});
   @override
   _BarChartComponentState createState() => _BarChartComponentState();
 }
@@ -9,9 +13,38 @@ class BarChartComponent extends StatefulWidget {
 class _BarChartComponentState extends State<BarChartComponent> {
   final Color barBackgroundColor = const Color(0xff72d8bf);
   final Duration animDuration = const Duration(milliseconds: 250);
+  List total = List();
   int touchedIndex;
   bool isPlaying = false;
 
+  Future getTotal() async {
+    var url = "${constrant.url}/getTransaksiSummary.php";
+    var res = await http
+        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+    var resBody = json.decode(res.body);
+    setState(() {
+      total = resBody;
+    });
+
+    print('total: $total');
+    return "Sucess";
+  }
+
+  double getJumlahByBulan(int bulan){
+    getTotal();
+    print(total.length);
+    for (int i =0; i< total.length; i++){
+      print('bulan :${total[i]['bulan']}');
+      print('test : $bulan');
+      if(total[i]['bulan'] == bulan){
+        return total[i]['total'];
+      }
+
+
+
+    }
+    return 0;
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -133,32 +166,33 @@ class _BarChartComponentState extends State<BarChartComponent> {
     );
   }
 
+
   List<BarChartGroupData> showingGroups() => List.generate(12, (i) {
     switch (i) {
       case 0:
-        return makeGroupData(0, 5, isTouched: i == touchedIndex);
+        return makeGroupData(0, getJumlahByBulan(1), isTouched: i == touchedIndex);
       case 1:
-        return makeGroupData(1, 6.5, isTouched: i == touchedIndex);
+        return makeGroupData(1, getJumlahByBulan(2), isTouched: i == touchedIndex);
       case 2:
-        return makeGroupData(2, 5, isTouched: i == touchedIndex);
+        return makeGroupData(2, getJumlahByBulan(3), isTouched: i == touchedIndex);
       case 3:
-        return makeGroupData(3, 7.5, isTouched: i == touchedIndex);
+        return makeGroupData(3, getJumlahByBulan(4), isTouched: i == touchedIndex);
       case 4:
-        return makeGroupData(4, 9, isTouched: i == touchedIndex);
+        return makeGroupData(4, getJumlahByBulan(5), isTouched: i == touchedIndex);
       case 5:
-        return makeGroupData(5, 11.5, isTouched: i == touchedIndex);
+        return makeGroupData(5, getJumlahByBulan(6), isTouched: i == touchedIndex);
       case 6:
-        return makeGroupData(6, 6.5, isTouched: i == touchedIndex);
+        return makeGroupData(6, getJumlahByBulan(7), isTouched: i == touchedIndex);
       case 7:
-        return makeGroupData(7, 6.5, isTouched: i == touchedIndex);
+        return makeGroupData(7, getJumlahByBulan(8), isTouched: i == touchedIndex);
       case 8:
-        return makeGroupData(8, 6.5, isTouched: i == touchedIndex);
+        return makeGroupData(8, getJumlahByBulan(9), isTouched: i == touchedIndex);
       case 9:
-        return makeGroupData(9, 6.5, isTouched: i == touchedIndex);
+        return makeGroupData(9, getJumlahByBulan(10), isTouched: i == touchedIndex);
       case 10:
-        return makeGroupData(10, 6.5, isTouched: i == touchedIndex);
+        return makeGroupData(10, getJumlahByBulan(11), isTouched: i == touchedIndex);
       case 11:
-        return makeGroupData(11, 6.5, isTouched: i == touchedIndex);
+        return makeGroupData(11, getJumlahByBulan(12), isTouched: i == touchedIndex);
       default:
         return null;
     }
@@ -190,3 +224,4 @@ class _BarChartComponentState extends State<BarChartComponent> {
     );
   }
 }
+

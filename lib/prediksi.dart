@@ -72,23 +72,42 @@ class _PredictionState extends State<Prediction> {
 
   Future getPrediksi() async {
     var url = "${constrant.url}/getPrediksi.php";
-    var response = await http.post(url,
-        body: {
-          "bulan_awal": indexAwal.toString(),
-          "bulan_akhir": indexAkhir.toString(),
-          "kategori_barang" : _mySelection,},
-        headers: {"Accept": "application/json"});
-    print(indexAwal);
-    print(indexAkhir);
-    print(_mySelection);
-    print ("test: ${response.body}");
+    var response = await http.post(url, body: {
+      "bulan_awal": indexAwal.toString(),
+      "bulan_akhir": indexAkhir.toString(),
+      "kategori_barang": _mySelection,
+    }, headers: {
+      "Accept": "application/json"
+    });
     var resBody = json.decode(response.body);
 
     setState(() {
-     prediksi = resBody;
+      prediksi = resBody;
     });
 
     //print('total: $transaksi');
+    return "Sucess";
+  }
+
+  Future getHitung() async {
+    var url = "${constrant.url}/getHitung.php";
+    var response = await http.post(url, body: {
+      "bulan_awal": indexAwal.toString(),
+      "bulan_akhir": indexAkhir.toString(),
+      "kategori_barang": _mySelection,
+    }, headers: {
+      "Accept": "application/json"
+    });
+    print(indexAwal);
+    print(indexAkhir);
+    print(_mySelection);
+
+    var resBody = json.decode(response.body);
+
+    setState(() {
+      hitung = resBody;
+    });
+    print("test: $hitung");
     return "Sucess";
   }
 
@@ -207,6 +226,7 @@ class _PredictionState extends State<Prediction> {
           RaisedButton(
             onPressed: () async {
               setState(() {
+                getHitung();
                 getPrediksi();
               });
             },

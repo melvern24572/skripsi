@@ -41,7 +41,7 @@ class GridViewCard extends StatelessWidget {
                 Text(": "+ total + " Transactions", style: TextStyle(color: Colors.white, fontSize: 16.0, fontWeight: FontWeight.bold),),
                 Spacer(),
                 Text("Click to see details", style: TextStyle(color: Colors.white, fontSize: 14.0, fontStyle: FontStyle.italic)),
-                Icon(Icons.arrow_forward_ios_sharp, size: 14, color: Colors.white)
+                Icon(Icons.arrow_forward_ios, size: 14, color: Colors.white)
               ],
             ),
           ),

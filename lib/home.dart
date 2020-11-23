@@ -125,7 +125,7 @@ class _HomeState extends State<Home> {
                   child: Container(
                     padding: EdgeInsets.all(16),
                     child: Icon(
-                      Icons.keyboard_arrow_left_sharp,
+                      Icons.keyboard_arrow_left,
                       size: 30,
                       color: Colors.black54,
                     ),
@@ -150,7 +150,7 @@ class _HomeState extends State<Home> {
                   child: Container(
                     padding: EdgeInsets.all(16),
                     child: Icon(
-                      Icons.keyboard_arrow_right_sharp,
+                      Icons.keyboard_arrow_right,
                       size: 30,
                       color: Colors.black54,
                     ),

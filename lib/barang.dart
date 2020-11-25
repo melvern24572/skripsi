@@ -17,15 +17,18 @@ class _PageBarangState extends State<PageBarang> {
   List _kategori = [
     'Laptop Asus X Series',
     'Notebook Ideapad S Series',
-    'Asus ROG Series',
     'Laptop Dell Inspiron Series',
     'Laptop Lenovo Series',
     'Intel Core i5',
-    'Intel Core i7',
     'AMD Ryzen',
     'FlashDisk 16GB',
     'FlashDisk 32GB',
-    'Webcam'
+    'Webcam',
+    'Ram DDR 3 4 GB',
+    'Ram DDR 3 8 GB',
+    'Ram DDR 4 4 GB',
+    'Ram DDR 4 8 GB',
+    'Ram DDR 4 16 GB',
   ];
   TextEditingController namaBarang = TextEditingController();
   TextEditingController updateBarang = TextEditingController();

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:skripsi/components/bar_chart.dart';
 import 'package:skripsi/utils/function.dart';
 import 'components/drawer.dart';
@@ -8,11 +7,7 @@ import 'package:skripsi/components/constrant.dart' as constrant;
 import 'components/gridview_card.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import 'list_transaksi.dart';
-
-class TransaksiSummary {}
-
 class Home extends StatefulWidget {
   static const String routeName = "/home";
 
@@ -21,6 +16,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int Caritahun;
   bool showSpinner;
   TextEditingController qty = TextEditingController();
   DateTime _dateTime;
@@ -43,13 +39,22 @@ class _HomeState extends State<Home> {
   ];
   List total = List();
   String _mySelection;
-  List list = List();
   List data = List();
+  String cariTahun ;
+
+  String getTodayYear(){
+    DateTime dt = DateTime.now();
+    return dt.year.toString();
+  }
 
   Future getTotal() async {
     var url = "${constrant.url}/getTransaksiSummary.php";
-    var res = await http
-        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+    var res = await http.post(url, body: {
+      'tahun' : cariTahun,
+    }, headers: {
+      "Accept": "application/json"
+    });
+
     var resBody = json.decode(res.body);
     setState(() {
       total = resBody;
@@ -93,6 +98,10 @@ class _HomeState extends State<Home> {
       showSpinner = false;
     });
   }
+  void getYear() async {
+    var CariTahun = getTodayYear();
+    cariTahun = CariTahun;
+  }
 
   @override
   void initState() {
@@ -104,7 +113,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     //setDummyData();
-
+    getYear();
     return Scaffold(
       appBar: AppBar(
         title: Text('Penjualan'),
@@ -120,7 +129,11 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    setState(() {
+
+                    });
+                  },
                   borderRadius: BorderRadius.circular(50),
                   child: Container(
                     padding: EdgeInsets.all(16),
@@ -135,7 +148,7 @@ class _HomeState extends State<Home> {
                   width: 8,
                 ),
                 Text(
-                  "2020",
+                  cariTahun ,
                   style: TextStyle(
                       fontSize: 24.0,
                       color: Colors.black54,
@@ -145,7 +158,14 @@ class _HomeState extends State<Home> {
                   width: 8,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    setState(() {
+                      var a = int.parse(cariTahun) + 1;
+                      cariTahun = a.toString();
+                      print (cariTahun);
+                    });
+
+                  },
                   borderRadius: BorderRadius.circular(50),
                   child: Container(
                     padding: EdgeInsets.all(16),
@@ -158,9 +178,7 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-            BarChartComponent(
-              jumlah: 10,
-            ),
+            BarChartComponent(tahun: cariTahun,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -229,6 +247,7 @@ class _HomeState extends State<Home> {
                   );
                 },
                 bulan: months[int.parse(total[i]['bulan'])],
+                tahun: total[i]['tahun'],
                 total: total[i]['total'],
               ),
             ),
@@ -266,7 +285,7 @@ class _HomeState extends State<Home> {
                                     },
                                     items: data.map((item) {
                                       return DropdownMenuItem(
-                                        child: new Text(item['nama_barang']),
+                                        child: new Text(item['nama_barang'],style: TextStyle(fontSize: 10.0),),
                                         value: item['id_barang'],
                                       );
                                     }).toList(),
@@ -290,7 +309,7 @@ class _HomeState extends State<Home> {
                                                   context: context,
                                                   initialDate: DateTime.now(),
                                                   firstDate: DateTime(2020),
-                                                  lastDate: DateTime(2021))
+                                                  lastDate: DateTime(2022))
                                               .then((date) {
                                             setState(() {
                                               _dateTime = date;
@@ -348,14 +367,14 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void setDummyData() {
-    total = [
-      {"total": "10", "bulan": "1", "tahun": "2020"},
-      {"total": "20", "bulan": "2", "tahun": "2020"},
-      {"total": "30", "bulan": "3", "tahun": "2020"},
-      {"total": "30", "bulan": "3", "tahun": "2020"},
-      {"total": "30", "bulan": "3", "tahun": "2020"},
-      {"total": "30", "bulan": "3", "tahun": "2020"},
-    ];
-  }
+//  void setDummyData() {
+//    total = [
+//      {"total": "10", "bulan": "1", "tahun": "2020"},
+//      {"total": "20", "bulan": "2", "tahun": "2020"},
+//      {"total": "30", "bulan": "3", "tahun": "2020"},
+//      {"total": "30", "bulan": "3", "tahun": "2020"},
+//      {"total": "30", "bulan": "3", "tahun": "2020"},
+//      {"total": "30", "bulan": "3", "tahun": "2020"},
+//    ];
+//  }
 }

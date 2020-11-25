@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import './components/drawer.dart';
@@ -13,6 +15,10 @@ class Prediction extends StatefulWidget {
 
 class _PredictionState extends State<Prediction> {
   String katval;
+  List tahun = [
+    '2020',
+    '2021',
+  ];
   List _kategori = [
     'Laptop Asus X Series',
     'Notebook Ideapad S Series',
@@ -20,14 +26,12 @@ class _PredictionState extends State<Prediction> {
     'Laptop Lenovo V Series',
     'Intel Core i3',
     'Intel Core i5',
-    'Intel Core i7',
     'AMD Ryzen',
     'FlashDisk 16GB',
     'FlashDisk 32GB',
     'Webcam',
     'Ram DDR 3 4 GB',
     'Ram DDR 3 8 GB',
-    'Ram DDR 3 16 GB',
     'Ram DDR 4 4 GB',
     'Ram DDR 4 8 GB',
     'Ram DDR 4 16 GB',
@@ -47,33 +51,25 @@ class _PredictionState extends State<Prediction> {
     "Desember"
   ];
   double a,b, nilai;
+  // ignore: non_constant_identifier_names
   var hasil_a, hasil_b, hasil_nilai;
   var indexAwal;
   var indexAkhir;
   String bulanawal;
   String bulanakhir;
+  String tahunawal;
+  String tahunakhir;
   List data = List();
   List prediksi = List();
   List hitung = List();
-  Future<String> getData() async {
-    var url = '${constrant.url}/getAllBarang.php';
-    var res = await http
-        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-    var resBody = json.decode(res.body);
-
-    setState(() {
-      data = resBody;
-    });
-
-    print('data : $data');
-    return 'Sucess';
-  }
 
   Future getPrediksi() async {
     var url = "${constrant.url}/getPrediksi.php";
     var response = await http.post(url, body: {
       "bulan_awal": indexAwal.toString(),
       "bulan_akhir": indexAkhir.toString(),
+      "tahun_awal" : tahunawal.toString(),
+      "tahun_akhir" : tahunakhir.toString(),
       "kategori_barang": katval,
     }, headers: {
       "Accept": "application/json"
@@ -83,15 +79,16 @@ class _PredictionState extends State<Prediction> {
     setState(() {
       prediksi = resBody;
     });
-
-    //print('total: $transaksi');
     return "Sucess";
   }
+
   Future getHitung() async {
     var url = "${constrant.url}/getHitung.php";
     var response = await http.post(url, body: {
       "bulan_awal": indexAwal.toString(),
       "bulan_akhir": indexAkhir.toString(),
+      "tahun_awal" : tahunawal.toString(),
+      "tahun_akhir" : tahunakhir.toString(),
       "kategori_barang": katval,
     }, headers: {
       "Accept": "application/json"
@@ -109,12 +106,6 @@ class _PredictionState extends State<Prediction> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    this.getData();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
@@ -124,11 +115,8 @@ class _PredictionState extends State<Prediction> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            children: [
-              Text('Pilih Barang : '),
-              StatefulBuilder(
-                  builder: (BuildContext context, StateSetter setState) {
+          StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
                 return Padding(
                   padding: EdgeInsets.all(8.0),
                   child: DropdownButton(
@@ -149,12 +137,11 @@ class _PredictionState extends State<Prediction> {
                   ),
                 );
               }),
-            ],
-          ),
+
+          //Choco(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Dari bulan '),
               StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
                 return DropdownButton(
@@ -169,18 +156,35 @@ class _PredictionState extends State<Prediction> {
                   onChanged: (String value) {
                     setState(() {
                       bulanawal = value;
-                      print(bulanawal);
                       indexAwal = months.indexOf(value) + 1;
-                      print(indexAwal);
                     });
                   },
                 );
               }),
-              Text('Sampai bulan '),
+              StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return DropdownButton(
+                      hint: Text('Tahun'),
+                      value: tahunawal,
+                      items: tahun.map((item) {
+                        return DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(item),
+                        );
+                      }).toList(),
+                      onChanged: (String value) {
+                        setState(() {
+                          tahunawal = value;
+                          print('tahun: $tahunawal');
+                        });
+                      },
+                    );
+                  }),
+              Text(' -> '),
               StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
                 return DropdownButton(
-                  hint: Text('Dari Bulan'),
+                  hint: Text('Bulan'),
                   value: bulanakhir,
                   items: months.map((String item) {
                     return DropdownMenuItem<String>(
@@ -197,6 +201,25 @@ class _PredictionState extends State<Prediction> {
                   },
                 );
               }),
+              StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return DropdownButton(
+                      hint: Text('Tahun'),
+                      value: tahunakhir,
+                      items: tahun.map((item) {
+                        return DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(item),
+                        );
+                      }).toList(),
+                      onChanged: (String value) {
+                        setState(() {
+                          tahunakhir = value;
+                          print('tahun: $tahunakhir');
+                        });
+                      },
+                    );
+                  }),
             ],
           ),
           RaisedButton(
@@ -212,6 +235,25 @@ class _PredictionState extends State<Prediction> {
             padding: EdgeInsets.only(top: 5.0),
           ),
           Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(25)),
+                color: Colors.deepPurple),
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                header("No"),
+                header("Tahun"),
+                header("Bulan"),
+                header("Kategori Barang"),
+                header("Y"),
+                header("X"),
+                header("XY"),
+                header("X2"),
+              ],
+            ),
+          ),
+          Container(
             child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: hitung.length,
@@ -220,12 +262,14 @@ class _PredictionState extends State<Prediction> {
                     Container(
                       child: Row(
                         children: [
-                          Text(hitung[index]['bulan']),
-                          Text(hitung[index]['kategori_barang']),
-                          Text(hitung[index]['y']),
-                          Text(hitung[index]['x']),
-                          Text(hitung[index]['xy']),
-                          Text(hitung[index]['x2']),
+                          body(hitung[index]['no']),
+                          body(hitung[index]['tahun']),
+                          body(hitung[index]['bulan']),
+                          body(hitung[index]['kategori_barang']),
+                          body(hitung[index]['y']),
+                          body(hitung[index]['x']),
+                          body(hitung[index]['xy']),
+                          body(hitung[index]['x2']),
                         ],
                       ),
                     );
@@ -261,4 +305,47 @@ class _PredictionState extends State<Prediction> {
       ),
     );
   }
+
 }
+Widget header(String name){
+  return Expanded(
+    child: Text(
+      name,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+
+      ),
+    ),
+  );
+}
+Widget body(String name){
+  return Expanded(
+    child: Text(
+      name,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 12,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  );
+}
+//class Choco extends StatefulWidget {
+//  const Choco({
+//    Key key,
+//  }) : super(key: key);
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return Wrap(
+//      children: [
+//
+//      ],
+//    );
+//  }
+//}
+

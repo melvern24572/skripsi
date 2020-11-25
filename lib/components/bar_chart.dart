@@ -4,8 +4,8 @@ import 'constrant.dart' as constrant;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 class BarChartComponent extends StatefulWidget {
-  final double jumlah;
-  const BarChartComponent({ this.jumlah});
+  final String tahun;
+  const BarChartComponent({@required this.tahun});
   @override
   _BarChartComponentState createState() => _BarChartComponentState();
 }
@@ -14,36 +14,41 @@ class _BarChartComponentState extends State<BarChartComponent> {
   final Color barBackgroundColor = const Color(0xff72d8bf);
   final Duration animDuration = const Duration(milliseconds: 250);
   List total = List();
+  String cariTahun;
   int touchedIndex;
   bool isPlaying = false;
 
+  String getTodayYear(){
+    DateTime dt = DateTime.now();
+    return dt.year.toString();
+  }
+
   Future getTotal() async {
-    var url = "${constrant.url}/getTransaksiSummary.php";
+    var url = "${constrant.url}/getChart.php";
     var res = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
+
     setState(() {
       total = resBody;
     });
-
-    print('total: $total');
+    print(resBody);
     return "Sucess";
   }
 
   double getJumlahByBulan(int bulan){
-    getTotal();
-    print(total.length);
     for (int i =0; i< total.length; i++){
-      print('bulan :${total[i]['bulan']}');
-      print('test : $bulan');
-      if(total[i]['bulan'] == bulan){
-        return total[i]['total'];
+      if(total[i]['bulan'] == bulan.toString() && total[i]['tahun'] == widget.tahun){
+        var a =double.parse(total[i]['total']) ;
+        return a;
       }
-
-
-
     }
     return 0;
+  }
+  @override
+  void initState() {
+    this.getTotal();
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
@@ -168,6 +173,7 @@ class _BarChartComponentState extends State<BarChartComponent> {
 
 
   List<BarChartGroupData> showingGroups() => List.generate(12, (i) {
+
     switch (i) {
       case 0:
         return makeGroupData(0, getJumlahByBulan(1), isTouched: i == touchedIndex);

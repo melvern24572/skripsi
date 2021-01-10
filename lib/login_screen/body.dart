@@ -64,7 +64,7 @@ class _LoginPageState extends State<BodyPage> {
                 ),
                 RoundedInputField(
                   controller: emailControl,
-                  hintText: 'Email',
+                  hintText: 'Username',
                 ),
                 RoundedPassword(
                   control: passControl,

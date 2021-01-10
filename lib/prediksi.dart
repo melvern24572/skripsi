@@ -1,11 +1,12 @@
-
-
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import './components/drawer.dart';
 import 'components/constrant.dart' as constrant;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'components/line_chart.dart';
 
 class Prediction extends StatefulWidget {
   static const String routeName = '/prediction';
@@ -14,6 +15,7 @@ class Prediction extends StatefulWidget {
 }
 
 class _PredictionState extends State<Prediction> {
+  ScrollController _scrollController = new ScrollController();
   String katval;
   List tahun = [
     '2020',
@@ -114,7 +116,8 @@ class _PredictionState extends State<Prediction> {
       drawer: MainDrawer(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+        children: <Widget>[
+
           StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
                 return Padding(
@@ -137,8 +140,6 @@ class _PredictionState extends State<Prediction> {
                   ),
                 );
               }),
-
-          //Choco(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -234,79 +235,99 @@ class _PredictionState extends State<Prediction> {
           Padding(
             padding: EdgeInsets.only(top: 5.0),
           ),
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(25)),
-                color: Colors.deepPurple),
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                header("No"),
-                header("Tahun"),
-                header("Bulan"),
-                header("Kategori Barang"),
-                header("Y"),
-                header("X"),
-                header("XY"),
-                header("X2"),
-              ],
-            ),
-          ),
-          Container(
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: hitung.length,
-                itemBuilder: (context, index) {
-                  return
-                    Container(
-                      child: Row(
-                        children: [
-                          body(hitung[index]['no']),
-                          body(hitung[index]['tahun']),
-                          body(hitung[index]['bulan']),
-                          body(hitung[index]['kategori_barang']),
-                          body(hitung[index]['y']),
-                          body(hitung[index]['x']),
-                          body(hitung[index]['xy']),
-                          body(hitung[index]['x2']),
-                        ],
-                      ),
-                    );
-                }),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 8.0),
-          ),
-          Container(
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: prediksi.length,
-                itemBuilder: (context, index) {
-                  a = double.parse(prediksi[index]['a']);
-                  b = double.parse(prediksi[index]['b']);
-                  nilai = double.parse(prediksi[index]['prediksi']);
-                  hasil_a = a.round();
-                  hasil_b = b.round();
-                  hasil_nilai = nilai.round();
-                  return
-                    Row(
-                      children: [
-                        Text(hasil_a.toString()),
-                        Text(hasil_b.toString()),
-                        Text(hasil_nilai.toString()),
-                      ],
-                    );
-
-
-                }),
-          ),
+          LineChartComponent(),
+//          Container(
+//            decoration: BoxDecoration(
+//                borderRadius: BorderRadius.all(Radius.circular(25)),
+//                color: Colors.deepPurple),
+//            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+//            child: Row(
+//              mainAxisAlignment: MainAxisAlignment.center,
+//              children: [
+//                header("No"),
+//                header("Tahun"),
+//                header("Bulan"),
+//                header("Kategori Barang"),
+//                header("Y"),
+//                header("X"),
+//                header("XY"),
+//                header("X2"),
+//              ],
+//            ),
+//          ),
+//          Container(
+//            child: ListView.builder(
+//              controller: _scrollController,
+//                shrinkWrap: true,
+//                itemCount: hitung.length,
+//                itemBuilder: (context, index) {
+//                  return
+//                    Container(
+//                      child: Row(
+//                        children: [
+//                          body(hitung[index]['no']),
+//                          body(hitung[index]['tahun']),
+//                          body(hitung[index]['bulan']),
+//                          body(hitung[index]['kategori_barang']),
+//                          body(hitung[index]['y']),
+//                          body(hitung[index]['x']),
+//                          body(hitung[index]['xy']),
+//                          body(hitung[index]['x2']),
+//                        ],
+//                      ),
+//                    );
+//                }),
+//          ),
+//          Padding(
+//            padding: EdgeInsets.only(top: 8.0),
+//          ),
+//          Container(
+//            child: ListView.builder(
+//              controller: _scrollController,
+//                shrinkWrap: true,
+//                itemCount: prediksi.length,
+//                itemBuilder: (context, index) {
+//                  a = double.parse(prediksi[index]['a']);
+//                  b = double.parse(prediksi[index]['b']);
+//                  nilai = double.parse(prediksi[index]['prediksi']);
+//                  hasil_a = a.round();
+//                  hasil_b = b.round();
+//                  hasil_nilai = nilai.round();
+//                  if(hasil_nilai < 0){
+//                    hasil_nilai = 0;
+//                  }
+//                  return
+//                    Column(
+//                      children: [
+//                        Row(
+//                          children: [
+//                            Text("nilai a : "),
+//                            Text(hasil_a.toString()),
+//                          ],
+//                        ),
+//                        Row(
+//                          children: [
+//                            Text("nilai b : "),
+//                            Text(hasil_b.toString()),
+//                          ],
+//                        ),
+//                        Row(
+//                          children: [
+//                            Text("nilai prediksi : "),
+//                            Text(hasil_nilai.toString()),
+//                          ],
+//                        ),
+//                      ],
+//                    );
+//                }),
+//          ),
         ],
       ),
     );
   }
 
 }
+
 Widget header(String name){
   return Expanded(
     child: Text(
@@ -334,18 +355,5 @@ Widget body(String name){
     ),
   );
 }
-//class Choco extends StatefulWidget {
-//  const Choco({
-//    Key key,
-//  }) : super(key: key);
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Wrap(
-//      children: [
-//
-//      ],
-//    );
-//  }
-//}
+
 

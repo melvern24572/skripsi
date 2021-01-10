@@ -98,14 +98,12 @@ class _HomeState extends State<Home> {
       showSpinner = false;
     });
   }
-  void getYear() async {
-    var CariTahun = getTodayYear();
-    cariTahun = CariTahun;
-  }
+
 
   @override
   void initState() {
     super.initState();
+    cariTahun = getTodayYear();
     this.getData();
     this.getTotal();
   }
@@ -113,7 +111,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     //setDummyData();
-    getYear();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Penjualan'),
@@ -131,7 +129,10 @@ class _HomeState extends State<Home> {
                 InkWell(
                   onTap: () {
                     setState(() {
-
+                        var b = int.parse(cariTahun) - 1;
+                        cariTahun = b.toString();
+                        print (cariTahun);
+                        getTotal();
                     });
                   },
                   borderRadius: BorderRadius.circular(50),
@@ -163,6 +164,7 @@ class _HomeState extends State<Home> {
                       var a = int.parse(cariTahun) + 1;
                       cariTahun = a.toString();
                       print (cariTahun);
+                      getTotal();
                     });
 
                   },

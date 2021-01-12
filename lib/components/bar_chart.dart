@@ -45,7 +45,6 @@ class _BarChartComponentState extends State<BarChartComponent> {
     }
     return 0;
   }
-
   @override
   void initState() {
     this.getTotal();

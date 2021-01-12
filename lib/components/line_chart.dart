@@ -7,12 +7,34 @@ import 'dart:convert';
 
 class LineChartComponent extends StatefulWidget {
   @override
+  final String tahun_awal;
+  final String tahun_akhir;
+  final String bulan_awal;
+  final String bulan_akhir;
+  final String kategori;
+
+  const LineChartComponent({Key key, this.tahun_awal, this.tahun_akhir, this.bulan_awal, this.bulan_akhir, this.kategori}) : super(key: key);
   _LineChartComponentState createState() => _LineChartComponentState();
 }
 
 
 class _LineChartComponentState extends State<LineChartComponent> {
   bool isShowingMainData;
+  List total = List();
+
+  Future getTotal() async {
+    var url = "${constrant.url}/getChart.php";
+    var res = await http
+        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+    var resBody = json.decode(res.body);
+
+    setState(() {
+      total = resBody;
+    });
+    print(resBody);
+    return "Sucess";
+  }
+
 
   @override
   void initState() {
@@ -26,7 +48,7 @@ class _LineChartComponentState extends State<LineChartComponent> {
       aspectRatio: 1.23,
       child: Container(
         decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(18)),
+          borderRadius: BorderRadius.all(Radius.circular(30)),
           gradient: LinearGradient(
             colors: [
               Color(0xff2c274c),
@@ -41,21 +63,21 @@ class _LineChartComponentState extends State<LineChartComponent> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                const SizedBox(
-                  height: 37,
+                SizedBox(
+                  height: 17,
                 ),
-                const Text(
-                  'Unfold Shop 2018',
+                Text(
+                  widget.kategori,
                   style: TextStyle(
-                    color: Color(0xff827daa),
-                    fontSize: 16,
+                    color: Colors.white,
+                    fontSize: 12,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 4,
                 ),
-                const Text(
+                Text(
                   'Monthly Sales',
                   style: TextStyle(
                       color: Colors.white,
@@ -64,7 +86,7 @@ class _LineChartComponentState extends State<LineChartComponent> {
                       letterSpacing: 2),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 37,
                 ),
                 Expanded(
@@ -102,23 +124,15 @@ class _LineChartComponentState extends State<LineChartComponent> {
       titlesData: FlTitlesData(
         bottomTitles: SideTitles(
           showTitles: true,
-          reservedSize: 22,
+          reservedSize: total.length.toDouble(),
           getTextStyles: (value) => const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 16,
+            fontSize: 9,
           ),
-          margin: 10,
+          margin: 8,
           getTitles: (value) {
-            switch (value.toInt()) {
-              case 2:
-                return 'SEPT';
-              case 7:
-                return 'OCT';
-              case 12:
-                return 'DEC';
-            }
-            return '';
+            return total[value.toInt()].bulan;
           },
         ),
         leftTitles: SideTitles(
@@ -131,15 +145,21 @@ class _LineChartComponentState extends State<LineChartComponent> {
           getTitles: (value) {
             switch (value.toInt()) {
               case 1:
-                return '1m';
+                return '0';
               case 2:
-                return '2m';
+                return '10';
               case 3:
-                return '3m';
+                return '20';
               case 4:
-                return '5m';
+                return '30';
               case 5:
-                return '6m';
+                return '40';
+              case 6:
+                return '50';
+              case 7:
+                return '70';
+              case 8:
+                return '100';
             }
             return '';
           },
@@ -166,7 +186,7 @@ class _LineChartComponentState extends State<LineChartComponent> {
           )),
       minX: 0,
       maxX: 14,
-      maxY: 6,
+      maxY: 8,
       minY: 0,
       lineBarsData: linesBarData(),
     );
@@ -177,7 +197,7 @@ class _LineChartComponentState extends State<LineChartComponent> {
 
       LineChartBarData(
         spots: [
-          FlSpot(3, 3.8),
+          FlSpot(1, 3),
           FlSpot(3, 1.9),
           FlSpot(6, 5),
           FlSpot(10, 3.3),

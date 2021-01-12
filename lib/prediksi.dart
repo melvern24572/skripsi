@@ -21,6 +21,7 @@ class _PredictionState extends State<Prediction> {
     '2020',
     '2021',
   ];
+  String temp;
   List _kategori = [
     'Laptop Asus X Series',
     'Notebook Ideapad S Series',
@@ -228,6 +229,7 @@ class _PredictionState extends State<Prediction> {
               setState(() {
                 getHitung();
                 getPrediksi();
+                temp = katval;
               });
             },
             child: Text("Submit"),
@@ -235,7 +237,7 @@ class _PredictionState extends State<Prediction> {
           Padding(
             padding: EdgeInsets.only(top: 5.0),
           ),
-          LineChartComponent(),
+          LineChartComponent(kategori: temp,),
 //          Container(
 //            decoration: BoxDecoration(
 //                borderRadius: BorderRadius.all(Radius.circular(25)),
@@ -328,32 +330,32 @@ class _PredictionState extends State<Prediction> {
 
 }
 
-Widget header(String name){
-  return Expanded(
-    child: Text(
-      name,
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 12,
-        fontWeight: FontWeight.bold,
-
-      ),
-    ),
-  );
-}
-Widget body(String name){
-  return Expanded(
-    child: Text(
-      name,
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: 12,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-  );
-}
+//Widget header(String name){
+//  return Expanded(
+//    child: Text(
+//      name,
+//      textAlign: TextAlign.center,
+//      style: TextStyle(
+//        color: Colors.white,
+//        fontSize: 12,
+//        fontWeight: FontWeight.bold,
+//
+//      ),
+//    ),
+//  );
+//}
+//Widget body(String name){
+//  return Expanded(
+//    child: Text(
+//      name,
+//      textAlign: TextAlign.center,
+//      style: TextStyle(
+//        color: Colors.black,
+//        fontSize: 12,
+//        fontWeight: FontWeight.bold,
+//      ),
+//    ),
+//  );
+//}
 
 

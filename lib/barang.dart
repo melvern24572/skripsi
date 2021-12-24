@@ -15,10 +15,10 @@ class _PageBarangState extends State<PageBarang> {
   bool showSpinner;
   String katval;
   List _kategori = [
-    'Laptop Asus X Series',
-    'Notebook Ideapad S Series',
-    'Laptop Dell Inspiron Series',
-    'Laptop Lenovo Series',
+    'Laptop Asus',
+    'Laptop Dell',
+    'Laptop Lenovo',
+    'Intel Core i3',
     'Intel Core i5',
     'AMD Ryzen',
     'FlashDisk 16GB',

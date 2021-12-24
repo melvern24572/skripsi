@@ -1,47 +1,54 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'constrant.dart' as constrant;
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
+// ignore: must_be_immutable
 class LineChartComponent extends StatefulWidget {
   @override
-  final String tahun_awal;
-  final String tahun_akhir;
-  final String bulan_awal;
-  final String bulan_akhir;
-  final String kategori;
-
-  const LineChartComponent({Key key, this.tahun_awal, this.tahun_akhir, this.bulan_awal, this.bulan_akhir, this.kategori}) : super(key: key);
+   List prediksi = List();
+   List hitung = List();
+   String kategori;
+  LineChartComponent({Key key, this.prediksi, this.hitung, this.kategori }) : super(key: key);
   _LineChartComponentState createState() => _LineChartComponentState();
 }
 
 
 class _LineChartComponentState extends State<LineChartComponent> {
+  int nilai;
   bool isShowingMainData;
   List total = List();
-
-  Future getTotal() async {
-    var url = "${constrant.url}/getChart.php";
-    var res = await http
-        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-    var resBody = json.decode(res.body);
-
-    setState(() {
-      total = resBody;
-    });
-    print(resBody);
-    return "Sucess";
-  }
-
-
+  int test;
   @override
   void initState() {
     super.initState();
     isShowingMainData = true;
   }
+  String getBulan(int bulan){
+    if(bulan == 1)
+      return "Jan";
+    else if(bulan == 2)
+      return "Feb";
+    else if(bulan == 3)
+      return "Mar";
+    else if(bulan == 4)
+      return "Apr";
+    else if(bulan == 5)
+      return "May";
+    else if(bulan == 6)
+      return "Jun";
+    else if(bulan == 7)
+      return "Jul";
+    else if(bulan == 8)
+      return "Aug";
+    else if(bulan == 9)
+      return "Sep";
+    else if(bulan == 10)
+      return "Oct";
+    else if(bulan == 11)
+      return "Nov";
+    else if(bulan == 12)
+      return "Dec";
 
+
+  }
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
@@ -63,7 +70,7 @@ class _LineChartComponentState extends State<LineChartComponent> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   height: 17,
                 ),
                 Text(
@@ -74,10 +81,10 @@ class _LineChartComponentState extends State<LineChartComponent> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 4,
                 ),
-                Text(
+                const Text(
                   'Monthly Sales',
                   style: TextStyle(
                       color: Colors.white,
@@ -86,7 +93,7 @@ class _LineChartComponentState extends State<LineChartComponent> {
                       letterSpacing: 2),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 37,
                 ),
                 Expanded(
@@ -124,15 +131,35 @@ class _LineChartComponentState extends State<LineChartComponent> {
       titlesData: FlTitlesData(
         bottomTitles: SideTitles(
           showTitles: true,
-          reservedSize: total.length.toDouble(),
+          reservedSize: 5,
           getTextStyles: (value) => const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 9,
           ),
           margin: 8,
+
           getTitles: (value) {
-            return total[value.toInt()].bulan;
+
+            setState(() {
+              if(test == null)
+              {
+                return '';
+              }else{
+                test = test;
+              }
+
+            });
+            if(value.toInt() == widget.hitung.length && test != null){
+              String prediksi = getBulan(test+1);
+              return prediksi;
+            }
+
+            test = int.parse(widget.hitung[value.toInt()]['bulan']);
+            String hitung = getBulan(test);
+//            return 'test';
+            return hitung;
+
           },
         ),
         leftTitles: SideTitles(
@@ -144,21 +171,15 @@ class _LineChartComponentState extends State<LineChartComponent> {
           ),
           getTitles: (value) {
             switch (value.toInt()) {
-              case 1:
-                return '0';
-              case 2:
-                return '10';
-              case 3:
+              case 20:
                 return '20';
-              case 4:
-                return '30';
-              case 5:
+              case 40:
                 return '40';
-              case 6:
-                return '50';
-              case 7:
-                return '70';
-              case 8:
+              case 60:
+                return '60';
+              case 80:
+                return '80';
+              case 100:
                 return '100';
             }
             return '';
@@ -185,24 +206,42 @@ class _LineChartComponentState extends State<LineChartComponent> {
             ),
           )),
       minX: 0,
-      maxX: 14,
-      maxY: 8,
+      maxX: widget.hitung.length.toDouble(),
+      maxY: 100,
       minY: 0,
       lineBarsData: linesBarData(),
     );
   }
 
+  List<FlSpot>getSpot (List hitung, List prediksi){
+    List<FlSpot> result = List();
+
+    for(int i=0; i<hitung.length; i++){
+      double a;
+      a = double.parse(hitung[i]['y']);
+      result.add(FlSpot(i.toDouble(), a));
+    }
+    if(prediksi.length > 0){
+      double b;
+      b = double.parse(prediksi[0]['prediksi']);
+      nilai = b.round();
+      if (nilai < 0){
+        nilai = 0;
+      }
+      result.add(FlSpot(hitung.length.toDouble(), nilai.toDouble()));
+
+    }
+    if(result.length == 0)
+    {
+      result.add(FlSpot(0.0, 0.0));
+    }
+    return result;
+  }
+
   List<LineChartBarData> linesBarData() {
     return [
-
       LineChartBarData(
-        spots: [
-          FlSpot(1, 3),
-          FlSpot(3, 1.9),
-          FlSpot(6, 5),
-          FlSpot(10, 3.3),
-          FlSpot(13, 4.5),
-        ],
+        spots: getSpot(widget.hitung, widget.prediksi),
         isCurved: true,
         curveSmoothness: 0,
         colors: const [

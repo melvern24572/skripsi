@@ -39,7 +39,7 @@ class _BarChartComponentState extends State<BarChartComponent> {
   double getJumlahByBulan(int bulan){
     for (int i =0; i< total.length; i++){
       if(total[i]['bulan'] == bulan.toString() && total[i]['tahun'] == widget.tahun){
-        var a =double.parse(total[i]['total']) ;
+        var a =double.parse(total[i]['total']);
         return a;
       }
     }

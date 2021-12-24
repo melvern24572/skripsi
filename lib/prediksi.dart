@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import './components/drawer.dart';
 import 'components/constrant.dart' as constrant;
 import 'package:http/http.dart' as http;
@@ -23,10 +24,9 @@ class _PredictionState extends State<Prediction> {
   ];
   String temp;
   List _kategori = [
-    'Laptop Asus X Series',
-    'Notebook Ideapad S Series',
-    'Laptop Dell Inspiron Series',
-    'Laptop Lenovo V Series',
+    'Laptop Asus',
+    'Laptop Dell',
+    'Laptop Lenovo',
     'Intel Core i3',
     'Intel Core i5',
     'AMD Ryzen',
@@ -96,8 +96,6 @@ class _PredictionState extends State<Prediction> {
     }, headers: {
       "Accept": "application/json"
     });
-    print(indexAwal);
-    print(indexAkhir);
 
     var resBody = json.decode(response.body);
 
@@ -107,6 +105,8 @@ class _PredictionState extends State<Prediction> {
     print("test: $hitung");
     return "Sucess";
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -237,92 +237,84 @@ class _PredictionState extends State<Prediction> {
           Padding(
             padding: EdgeInsets.only(top: 5.0),
           ),
-          LineChartComponent(kategori: temp,),
-//          Container(
-//            decoration: BoxDecoration(
-//                borderRadius: BorderRadius.all(Radius.circular(25)),
-//                color: Colors.deepPurple),
-//            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-//            child: Row(
-//              mainAxisAlignment: MainAxisAlignment.center,
-//              children: [
-//                header("No"),
-//                header("Tahun"),
-//                header("Bulan"),
-//                header("Kategori Barang"),
-//                header("Y"),
-//                header("X"),
-//                header("XY"),
-//                header("X2"),
-//              ],
-//            ),
-//          ),
-//          Container(
-//            child: ListView.builder(
-//              controller: _scrollController,
-//                shrinkWrap: true,
-//                itemCount: hitung.length,
-//                itemBuilder: (context, index) {
-//                  return
-//                    Container(
-//                      child: Row(
-//                        children: [
-//                          body(hitung[index]['no']),
-//                          body(hitung[index]['tahun']),
-//                          body(hitung[index]['bulan']),
-//                          body(hitung[index]['kategori_barang']),
-//                          body(hitung[index]['y']),
-//                          body(hitung[index]['x']),
-//                          body(hitung[index]['xy']),
-//                          body(hitung[index]['x2']),
-//                        ],
-//                      ),
-//                    );
-//                }),
-//          ),
-//          Padding(
-//            padding: EdgeInsets.only(top: 8.0),
-//          ),
-//          Container(
-//            child: ListView.builder(
-//              controller: _scrollController,
-//                shrinkWrap: true,
-//                itemCount: prediksi.length,
-//                itemBuilder: (context, index) {
-//                  a = double.parse(prediksi[index]['a']);
-//                  b = double.parse(prediksi[index]['b']);
-//                  nilai = double.parse(prediksi[index]['prediksi']);
-//                  hasil_a = a.round();
-//                  hasil_b = b.round();
-//                  hasil_nilai = nilai.round();
-//                  if(hasil_nilai < 0){
-//                    hasil_nilai = 0;
-//                  }
-//                  return
-//                    Column(
-//                      children: [
-//                        Row(
-//                          children: [
-//                            Text("nilai a : "),
-//                            Text(hasil_a.toString()),
-//                          ],
-//                        ),
-//                        Row(
-//                          children: [
-//                            Text("nilai b : "),
-//                            Text(hasil_b.toString()),
-//                          ],
-//                        ),
-//                        Row(
-//                          children: [
-//                            Text("nilai prediksi : "),
-//                            Text(hasil_nilai.toString()),
-//                          ],
-//                        ),
-//                      ],
-//                    );
-//                }),
-//          ),
+          LineChartComponent(hitung: hitung, prediksi: prediksi, kategori: katval,),
+          Row(
+            mainAxisAlignment:MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20.0, right: 10.0, top: 10.0),
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 150.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                      color: Color(0xFF4364A1),
+                    ),
+                    child: Column(
+                      children:[
+                        SizedBox(
+                          height: 50.0,
+                        ),
+                        Text(
+                          "MAPE",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20.0,
+                              color: Colors.white
+                          ),
+                        ),
+                        Text(
+                          "15,6%",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20.0,
+                              color: Colors.white
+                          ),
+                        ),
+                      ]
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20.0, right: 10.0, top: 10.0),
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 150.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                      color: Color(0xFF4364A1),
+                    ),
+                    child: Column(
+                        children:[
+                          SizedBox(
+                            height: 50.0,
+                          ),
+                          Text(
+                            "Akurasi",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20.0,
+                                color: Colors.white
+                            ),
+                          ),
+                          Text(
+                            "84,4%",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20.0,
+                                color: Colors.white
+                            ),
+                          ),
+                        ]
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -330,32 +322,6 @@ class _PredictionState extends State<Prediction> {
 
 }
 
-//Widget header(String name){
-//  return Expanded(
-//    child: Text(
-//      name,
-//      textAlign: TextAlign.center,
-//      style: TextStyle(
-//        color: Colors.white,
-//        fontSize: 12,
-//        fontWeight: FontWeight.bold,
-//
-//      ),
-//    ),
-//  );
-//}
-//Widget body(String name){
-//  return Expanded(
-//    child: Text(
-//      name,
-//      textAlign: TextAlign.center,
-//      style: TextStyle(
-//        color: Colors.black,
-//        fontSize: 12,
-//        fontWeight: FontWeight.bold,
-//      ),
-//    ),
-//  );
-//}
+
 
 

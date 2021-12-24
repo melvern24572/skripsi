@@ -181,55 +181,12 @@ class _HomeState extends State<Home> {
               ],
             ),
             BarChartComponent(tahun: cariTahun,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "This Month Sales",
-                  style: TextStyle(
-                      fontSize: 24.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 4),
-                  padding:
-                      EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                  ),
-                  child: Text(
-                    "Nov 2020",
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 8),
-              child: Text(
-                "Total: 56 transactions",
-              ),
-            ),
+
+
             SizedBox(
               height: 8,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  child: Text("Top sales: Leptop Lenovo"),
-                ),
-                Icon(
-                  Icons.star,
-                  color: Colors.yellow,
-                  size: 20,
-                ),
-              ],
-            ),
+
             SizedBox(
               height: 16,
             ),
@@ -287,7 +244,7 @@ class _HomeState extends State<Home> {
                                     },
                                     items: data.map((item) {
                                       return DropdownMenuItem(
-                                        child: new Text(item['nama_barang'],style: TextStyle(fontSize: 10.0),),
+                                        child: new Text(item['nama_barang'],style: TextStyle(fontSize: 7.5),),
                                         value: item['id_barang'],
                                       );
                                     }).toList(),
